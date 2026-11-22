@@ -51,7 +51,17 @@ El **administrador** es un empleado interno de AgentHub. Usa este panel para:
   - Primario: fondo índigo y texto blanco.
   - Secundario: borde gris y fondo neutro.
   - Peligroso: fondo rojo y texto blanco.
-- **Texto en contraste:** todo el texto es legible en ambos modos.
+- **Tarjetas de métrica del Dashboard:** cada una usa su color de acento (azul, morado, verde o rojo) en cuatro sitios, con un tono distinto en cada modo:
+  - **Fondo:** degradado suave desde el color de acento hacia transparente, sobre la superficie de la tarjeta. Es más tenue en modo claro, para que la tarjeta siga viéndose clara.
+  - **Cuadro del icono:** fondo del color de acento intenso (no el tono suave de los badges), con el icono en blanco, en ambos modos.
+  - **Valor:** tono claro del acento en modo oscuro y tono oscuro del acento en modo claro.
+  - **Franja vertical:** el acento en su tono medio, igual en ambos modos.
+- **Gráfico de actividad semanal del Dashboard:**
+  - **Contenedor:** superficie normal (blanca en claro, gris pizarra oscuro en oscuro), con borde sutil y esquinas redondeadas, como el resto de tarjetas.
+  - **Barras:** índigo de marca en ambos modos, con las esquinas superiores redondeadas.
+  - **Valor encima de cada barra:** texto principal (casi negro en claro, casi blanco en oscuro).
+  - **Título:** texto principal. **Subtítulo y etiquetas de los días:** texto secundario.
+- **Texto en contraste:** todo el texto es legible en ambos modos, incluidos los valores en color de acento de las tarjetas de métrica sobre su degradado y los textos del gráfico semanal.
 
 ### 2.4 Dataset (fuente única de verdad)
 Fecha de referencia del dataset: **21/11/26**.
@@ -175,8 +185,26 @@ Trazas técnicas (se muestran literalmente, una línea por renglón):
   ```
 
 **Métricas fijas del Dashboard**
-- **Ingresos totales (este mes): 331,00 €.** Es la suma de la cuota mensual de los contratos activos (60 + 27 + 89 + 54 + 101). El valor es fijo y no cambia al finalizar contratos.
-- **Pérdidas por descuentos y cupones: 48,00 €.**
+| Métrica | Valor | Variación vs. mes anterior |
+|---|---|---|
+| Ingresos totales (este mes) | 331,00 € | +12 % |
+| Pérdidas por descuentos y cupones | 48,00 € | −5 % |
+
+- **Ingresos totales:** el valor es la suma de la cuota mensual de los contratos activos (60 + 27 + 89 + 54 + 101). Es fijo y no cambia al finalizar contratos.
+- **Variaciones:** son datos fijos. Se muestran tal cual, con signo y espacio antes de "%": "+12 %" y "−5 %" (signo menos tipográfico, no guion).
+
+**Actividad semanal** (tareas ejecutadas por los agentes; datos fijos)
+| Día | Etiqueta | Tareas | Altura de la barra |
+|---|---|---|---|
+| Lunes | L | 42 | 58 % |
+| Martes | M | 58 | 79 % |
+| Miércoles | X | 51 | 70 % |
+| Jueves | J | 67 | 92 % |
+| Viernes | V | 73 | 100 % |
+| Sábado | S | 29 | 40 % |
+| Domingo | D | 18 | 25 % |
+
+La altura de cada barra es su valor dividido entre el valor máximo de la semana (73), expresada en porcentaje del área de barras y redondeada al entero más cercano. La columna "Altura" es el resultado esperado con estos datos; en el código no se escribe a mano, sino que se calcula a partir de los valores.
 
 ### 2.5 Reglas de coherencia tras cambios
 1. Los contadores "Agentes activos" y "Agentes fallando" del Dashboard reflejan siempre los agentes visibles en Gestión de agentes con esos estados.
@@ -201,16 +229,30 @@ Trazas técnicas (se muestran literalmente, una línea por renglón):
 
 ### 3.1 Dashboard (título de la barra superior: "Dashboard")
 - **D1 · Rejilla de métricas.** Cuatro tarjetas de métrica en cuadrícula de 2×2 (en pantallas muy estrechas se apilan en una columna), con separación generosa. Orden:
-  1. Ingresos totales (este mes): 331,00 €, acento azul, icono de billete.
-  2. Pérdidas por descuentos y cupones: 48,00 €, acento morado, icono de cupón.
-  3. Agentes activos: 3, acento verde, icono de círculo con check.
-  4. Agentes fallando: 2, acento rojo, icono de triángulo de advertencia.
-- **D2 · Aspecto de cada tarjeta.**
-  - Fondo de superficie, sombra sutil y una franja vertical del color de acento en el borde izquierdo.
-  - Arriba, el icono dentro de un cuadrado redondeado con fondo suave del color de acento.
-  - Debajo, la etiqueta en texto secundario pequeño y el valor en cifra grande y negrita.
-- **D3 · Valores coherentes.** "Agentes activos" y "Agentes fallando" se calculan a partir de los agentes de Gestión de agentes (regla 2.5.1). Coinciden siempre con los badges de esa tabla.
-- **D4 · Placeholder del gráfico semanal.** Debajo de las tarjetas hay un bloque de ancho completo y unos 256 px de alto, con esquinas redondeadas y borde gris discontinuo. En el centro, en texto secundario, la etiqueta "Gráfico de actividad semanal".
+  | # | Etiqueta | Valor | Línea de contexto | Acento | Icono |
+  |---|---|---|---|---|---|
+  | 1 | Ingresos totales (este mes) | 331,00 € | +12 % vs. mes anterior | azul | billete |
+  | 2 | Pérdidas por descuentos y cupones | 48,00 € | −5 % vs. mes anterior | morado | cupón |
+  | 3 | Agentes activos | 3 | de 6 agentes en total | verde | círculo con check |
+  | 4 | Agentes fallando | 2 | con errores recientes | rojo | triángulo de advertencia |
+- **D2 · Aspecto de cada tarjeta.** Los colores exactos de cada modo están en §2.3.
+  - **Fondo:** degradado suave de su color de acento hacia transparente, sobre la superficie de la tarjeta, con borde sutil, sombra sutil y una franja vertical del color de acento en el borde izquierdo.
+  - **Icono:** arriba, un icono de unos 24 px dentro de un cuadrado redondeado de unos 48 px, con fondo del color de acento intenso y el icono en blanco.
+  - **Etiqueta:** debajo del icono, en texto secundario pequeño.
+  - **Valor:** cifra grande y negrita en el color de acento de su tarjeta, no en blanco ni en negro.
+  - **Línea de contexto:** debajo del valor, en texto secundario pequeño.
+- **D3 · Valores coherentes.**
+  - "Agentes activos" y "Agentes fallando" se calculan a partir de los agentes de Gestión de agentes (regla 2.5.1). Coinciden siempre con los badges de esa tabla.
+  - La línea de contexto de "Agentes activos" es "de {total} agentes en total", donde {total} es el número de agentes visibles en Gestión de agentes, sea cual sea su estado. Con el dataset inicial es "de 6 agentes en total"; si se elimina un agente, pasa a "de 5 agentes en total".
+  - Las líneas de contexto de Ingresos y Pérdidas salen de las métricas fijas de §2.4. La de "Agentes fallando" es siempre el texto fijo "con errores recientes".
+- **D4 · Gráfico de actividad semanal.** Debajo de las tarjetas, un bloque de ancho completo con un gráfico de barras verticales hecho solo con elementos HTML y utilidades de Tailwind, sin librerías de gráficos ni lienzos de dibujo. Colores por modo en §2.3.
+  - **Cabecera:** arriba a la izquierda, el título "Actividad semanal" y debajo el subtítulo "Tareas ejecutadas por los agentes", en texto secundario.
+  - **Área de barras:** de unos 192 px de alto, con las 7 barras alineadas por la base, del mismo ancho y repartidas uniformemente a todo el ancho del bloque.
+  - **Barras:** una por día, en orden de lunes a domingo, con los valores de "Actividad semanal" de §2.4. Índigo de marca, con esquinas superiores redondeadas.
+  - **Altura:** proporcional a su valor según la regla de §2.4; la barra del valor máximo ocupa toda el área. Se define siempre con utilidades de Tailwind, nunca con atributos de estilo (restricción 2.2.1).
+  - **Valor:** el número encima de cada barra, en texto pequeño.
+  - **Etiqueta:** debajo de cada barra, la inicial del día: L, M, X, J, V, S, D.
+  - **Accesibilidad:** para lectores de pantalla, el gráfico se presenta como una lista de 7 elementos, y cada barra se anuncia con el nombre completo del día y su valor, por ejemplo "Lunes: 42 tareas".
 
 ### 3.2 Gestión de usuarios (título: "Gestión de usuarios")
 - **U1 · Tabla de usuarios.** Muestra los 6 usuarios del dataset.
@@ -326,7 +368,7 @@ Trazas técnicas (se muestran literalmente, una línea por renglón):
 - *Comportamiento:* el título cambia al navegar. La barra permanece visible al hacer scroll.
 
 **Tarjeta de métrica**
-- *Contenido y aspecto:* recibe un icono, una etiqueta, un valor y un color de acento (azul, morado, verde o rojo). Aspecto descrito en D2.
+- *Contenido y aspecto:* recibe un icono, una etiqueta, un valor, una línea de contexto y un color de acento (azul, morado, verde o rojo). Aspecto descrito en D2 y colores por modo en §2.3.
 - *Comportamiento:* estática.
 
 **Dropdown de acciones**
@@ -396,7 +438,7 @@ Trazas técnicas (se muestran literalmente, una línea por renglón):
 10. Tras cambiar a modo claro y recorrer las 6 secciones, el panel sigue en modo claro.
 11. Los nombres de empresa son idénticos en Usuarios (campo Empresa del detalle), en Gestión de agentes (columna Propietario) y en Contrataciones (columna Cliente).
 12. El Dashboard muestra 3 agentes activos y 2 fallando, igual que los badges de Gestión de agentes.
-13. Tras eliminar un agente activo y volver al Dashboard, "Agentes activos" muestra 2.
+13. Tras eliminar un agente activo y volver al Dashboard, "Agentes activos" muestra 2 y su línea de contexto dice "de 5 agentes en total".
 14. Los badges de Skills muestran: Navegación web 3, Lectura de documentos 3, Gestión de calendarios 1, Envío de correos 3, Análisis de datos 3 e Integración CRM 2.
 15. En cada contrato, el Total del modal de detalle coincide exactamente con el Importe de la tabla.
 16. En el desglose de cada contrato, el precio/mes de cada skill coincide con el precio que muestra el modal de detalle de esa skill.
@@ -424,9 +466,13 @@ Trazas técnicas (se muestran literalmente, una línea por renglón):
 38. Al cargar Gestión de agentes, todas las listas de skills están colapsadas y cada control muestra el número de skills con una flecha hacia abajo.
 39. Al hacer clic en el control de skills, se despliega con transición suave una sub-fila a todo el ancho de la tabla, justo debajo del agente, con los nombres de sus skills, y la flecha apunta hacia arriba.
 40. Un segundo clic en el control colapsa la sub-fila con transición suave, sin dejar hueco visible, y la flecha vuelve a apuntar hacia abajo.
-41. El Dashboard muestra 4 tarjetas en cuadrícula de 2×2, con acento azul (ingresos totales), morado (pérdidas por descuentos y cupones), verde (agentes activos) y rojo (agentes fallando), cada una con sombra sutil.
-42. Debajo de las tarjetas del Dashboard hay un bloque de ancho completo con borde discontinuo y la etiqueta "Gráfico de actividad semanal" centrada.
+41. El Dashboard muestra 4 tarjetas en cuadrícula de 2×2, con acento azul (ingresos totales), morado (pérdidas por descuentos y cupones), verde (agentes activos) y rojo (agentes fallando). Cada una tiene sombra sutil, fondo con degradado suave de su acento, el icono en blanco sobre un cuadro del acento intenso y el valor en el color de su acento.
+42. Debajo de las tarjetas del Dashboard hay un gráfico de barras verticales de ancho completo con el título "Actividad semanal", el subtítulo "Tareas ejecutadas por los agentes" y 7 barras índigo con las esquinas superiores redondeadas. Cada barra tiene su valor encima (42, 58, 51, 67, 73, 29, 18) y su etiqueta debajo (L, M, X, J, V, S, D).
 43. La tabla de usuarios tiene al menos 5 filas, con el plan como texto normal y el estado como badge verde "Activo" o gris "Inactivo".
 44. En Skills, el callout aparece encima del catálogo. El catálogo muestra 3 columnas a 1280 px y 2 columnas a 768 px, y cada tarjeta tiene su botón ⋮ en la esquina superior derecha.
 45. La tabla de contrataciones tiene al menos 4 contratos, activos y finalizados, y los activos no muestran fecha de fin.
 46. El Log de errores tiene al menos 6 entradas ordenadas de más reciente a más antigua, con badges amarillo "Leve", naranja "Medio" y rojo "Grave".
+47. Debajo del valor de cada tarjeta del Dashboard aparece su línea de contexto en texto secundario pequeño: "+12 % vs. mes anterior", "−5 % vs. mes anterior", "de 6 agentes en total" y "con errores recientes".
+48. En modo oscuro y en modo claro, los valores en color de acento y las líneas de contexto de las tarjetas son legibles sobre su degradado, y en modo claro las tarjetas se siguen viendo claras.
+49. La altura de cada barra del gráfico semanal es proporcional a su valor: la del viernes (73) ocupa toda el área de barras y las demás miden su porcentaje redondeado (por ejemplo, el domingo, con 18, mide el 25 %). Las alturas se definen con utilidades de Tailwind, sin atributos de estilo.
+50. En modo oscuro y en modo claro, el gráfico semanal se ve sobre su superficie con las barras en índigo, y el título, el subtítulo, los valores y las etiquetas de los días son legibles. Con un lector de pantalla, cada barra se anuncia como "{Día}: {valor} tareas".

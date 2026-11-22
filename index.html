@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgentHub Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      // Clases que solo aparecen en el DOM tras una interacción (colapsable de skills,
+      // contenido de los modales). El CDN genera CSS a partir del DOM: sin declararlas
+      // aquí, en el primer uso la regla aún no existe (sin transición / un frame sin estilo).
+      safelist: [
+        // Colapsable de skills (Fase 6)
+        'max-h-40', 'opacity-100', 'rotate-180',
+        'bg-light-secondary-container', 'dark:bg-brand-indigo-soft',
+        'border-brand-indigo-light-border', 'dark:border-brand-indigo-border',
+        'text-light-on-secondary-container', 'dark:text-brand-indigo-text',
+        // Botones del pie de los modales
+        'bg-danger-solid', 'text-on-danger-solid', 'hover:bg-red-700', 'text-white', 'hover:bg-light-primary',
+        'dark:bg-dark-surface-container-high', 'dark:hover:bg-dark-surface-container-highest',
+        'focus-visible:ring-offset-2', 'focus-visible:ring-offset-light-surface', 'dark:focus-visible:ring-offset-dark-surface-container',
+        // Contenido de los modales (dl, desglose, textarea, traza)
+        'break-words', 'min-w-0', 'mb-2', 'border-t-2', 'resize-y',
+        'focus:outline-none', 'focus:ring-2', 'focus:ring-brand-indigo',
+        'font-mono', 'text-mono-sm', 'bg-terminal-bg', 'text-terminal-text', 'overflow-x-auto', 'whitespace-pre',
+      ],
+      theme: {
+        extend: {
+          colors: {
+            // Marca y acentos (modo oscuro)
+            'brand-indigo': '#4F46E5',
+            'brand-indigo-soft': '#26234D',
+            'brand-indigo-border': '#3B377A',
+            'brand-indigo-text': '#C3C0FF',
+            'accent-blue': '#3B82F6',
+            'accent-blue-soft': '#172554',
+            'accent-blue-text': '#93C5FD',
+            'accent-purple': '#A855F7',
+            'accent-purple-soft': '#3B0764',
+            'accent-purple-text': '#D8B4FE',
+            'accent-green': '#22C55E',
+            'accent-green-soft': '#14532D',
+            'accent-green-text': '#86EFAC',
+            'accent-red': '#EF4444',
+            'accent-red-soft': '#450A0A',
+            'accent-red-text': '#FCA5A5',
+            'accent-yellow': '#EAB308',
+            'accent-yellow-soft': '#422006',
+            'accent-yellow-text': '#FDE047',
+            'accent-orange': '#F97316',
+            'accent-orange-soft': '#431407',
+            'accent-orange-text': '#FDBA74',
+            'accent-neutral-soft': '#2A2933',
+            'accent-neutral-text': '#C7C4D8',
+            // Marca y acentos (modo claro, de DESIGN_LIGHT.md)
+            'brand-indigo-light-border': '#C7D2FE',
+            'accent-blue-light-soft': '#DBEAFE',
+            'accent-blue-light-text': '#1E40AF',
+            'accent-purple-light-soft': '#F3E8FF',
+            'accent-purple-light-text': '#6B21A8',
+            'accent-green-light-soft': '#DCFCE7',
+            'accent-green-light-text': '#166534',
+            'accent-red-light-soft': '#FEE2E2',
+            'accent-red-light-text': '#991B1B',
+            'accent-yellow-light-soft': '#FEF9C3',
+            'accent-yellow-light-text': '#854D0E',
+            'accent-orange-light-soft': '#FFEDD5',
+            'accent-orange-light-text': '#9A3412',
+            'accent-neutral-light-soft': '#F1F5F9',
+            'accent-neutral-light-text': '#334155',
+            // Utilidades
+            'danger-solid': '#DC2626',
+            'on-danger-solid': '#FFFFFF',
+            'terminal-bg': '#09090E',
+            'terminal-text': '#86EFAC',
+            // Roles tonales modo claro
+            'light-primary': '#3525CD',
+            'light-on-primary': '#FFFFFF',
+            'light-primary-container': '#4F46E5',
+            'light-on-primary-container': '#FFFFFF',
+            'light-secondary': '#58579B',
+            'light-on-secondary': '#FFFFFF',
+            'light-secondary-container': '#E2DFFF',
+            'light-on-secondary-container': '#1D00A5',
+            'light-error': '#BA1A1A',
+            'light-on-error': '#FFFFFF',
+            'light-error-container': '#FFDAD6',
+            'light-on-error-container': '#93000A',
+            'light-background': '#F8FAFC',
+            'light-on-background': '#1B1B24',
+            'light-surface': '#FFFFFF',
+            'light-surface-container-lowest': '#FFFFFF',
+            'light-surface-container-low': '#F5F2FF',
+            'light-surface-container': '#F0ECF9',
+            'light-surface-container-high': '#EAE6F4',
+            'light-surface-container-highest': '#E4E1EE',
+            'light-on-surface': '#1B1B24',
+            'light-on-surface-variant': '#464555',
+            'light-outline': '#777587',
+            'light-outline-variant': '#C7C4D8',
+            'light-scrim': '#000000',
+            // Roles tonales modo oscuro
+            'dark-primary': '#C3C0FF',
+            'dark-on-primary': '#1D00A5',
+            'dark-primary-container': '#4F46E5',
+            'dark-on-primary-container': '#FFFFFF',
+            'dark-secondary': '#C3C0FF',
+            'dark-on-secondary': '#2A276A',
+            'dark-secondary-container': '#2A276A',
+            'dark-on-secondary-container': '#E2DFFF',
+            'dark-error': '#FFB4AB',
+            'dark-on-error': '#690005',
+            'dark-error-container': '#93000A',
+            'dark-on-error-container': '#FFDAD6',
+            'dark-background': '#0E0D16',
+            'dark-on-background': '#E4E1EE',
+            'dark-surface': '#1B1B24',
+            'dark-surface-container-lowest': '#0E0D16',
+            'dark-surface-container-low': '#16151F',
+            'dark-surface-container': '#1F1F28',
+            'dark-surface-container-high': '#2A2933',
+            'dark-surface-container-highest': '#35343E',
+            'dark-on-surface': '#E4E1EE',
+            'dark-on-surface-variant': '#ACA9BC',
+            'dark-outline': '#918FA1',
+            'dark-outline-variant': '#302F3E',
+            'dark-scrim': '#000000',
+          },
+          borderRadius: {
+            'sm': '6px',
+            'DEFAULT': '8px',
+            'md': '10px',
+            'lg': '12px',
+            'xl': '16px',
+            'full': '9999px',
+          },
+          spacing: {
+            'gutter-xs': '4px',
+            'gutter-sm': '8px',
+            'gutter-md': '16px',
+            'gutter-lg': '24px',
+            'gutter-xl': '32px',
+            'section': '32px',
+            'page-margin': '24px',
+          },
+          fontFamily: {
+            'display': ['ui-sans-serif', 'system-ui', 'sans-serif'],
+            'headline': ['ui-sans-serif', 'system-ui', 'sans-serif'],
+            'title': ['ui-sans-serif', 'system-ui', 'sans-serif'],
+            'body': ['ui-sans-serif', 'system-ui', 'sans-serif'],
+            'label': ['ui-sans-serif', 'system-ui', 'sans-serif'],
+            'mono': ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+          },
+          fontSize: {
+            'display-lg': ['36px', { lineHeight: '44px', letterSpacing: '-0.5px', fontWeight: '700' }],
+            'display-lg-mobile': ['28px', { lineHeight: '34px', letterSpacing: '-0.25px', fontWeight: '700' }],
+            'headline-lg': ['24px', { lineHeight: '32px', letterSpacing: '-0.25px', fontWeight: '700' }],
+            'headline-md': ['20px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '700' }],
+            'title-lg': ['18px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '600' }],
+            'title-md': ['15px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '600' }],
+            'body-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+            'body-sm': ['13px', { lineHeight: '18px', letterSpacing: '0px', fontWeight: '400' }],
+            'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+            'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.25px', fontWeight: '600' }],
+            'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.4px', fontWeight: '600' }],
+            'mono-sm': ['12px', { lineHeight: '18px', letterSpacing: '0px', fontWeight: '400' }],
+          },
+          transitionDuration: {
+            'state-change': '100ms',
+            'drawer-toggle': '300ms',
+            'surface-enter': '200ms',
+          },
+          transitionTimingFunction: {
+            'state-change': 'ease-out',
+            'drawer-toggle': 'cubic-bezier(0.2, 0, 0, 1)',
+            'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-light-background dark:bg-dark-background text-light-on-background dark:text-dark-on-background font-body antialiased">
+
+  <!-- Sidebar fijo -->
+  <aside class="fixed inset-y-0 left-0 z-30 w-56 lg:w-64 bg-light-surface dark:bg-dark-surface border-r border-light-outline-variant dark:border-dark-outline-variant flex flex-col">
+    <div class="h-16 px-5 flex items-center gap-3 border-b border-light-outline-variant dark:border-dark-outline-variant">
+      <div class="w-8 h-8 rounded bg-brand-indigo flex items-center justify-center text-light-on-primary shrink-0">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="7" width="16" height="12" rx="3"></rect><path d="M12 7V3M9 3h6M9 12h.01M15 12h.01M9.5 15.5c.7.6 1.6 1 2.5 1s1.8-.4 2.5-1"></path>
+        </svg>
+      </div>
+      <span class="font-headline text-title-lg font-bold text-light-on-surface dark:text-dark-on-surface">AgentHub</span>
+    </div>
+
+    <nav aria-label="Navegación principal" class="flex-1 p-3">
+      <ul class="flex flex-col gap-1">
+        <li>
+          <button type="button" data-section="dashboard" aria-current="page" class="w-full flex items-center gap-3 px-3 py-2.5 rounded text-left border-l-2 border-brand-indigo bg-light-secondary-container text-light-on-secondary-container dark:bg-brand-indigo-soft dark:text-brand-indigo-text font-semibold transition-colors duration-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-indigo">
+            <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect>
+            </svg>
+            <span class="font-label text-label-lg">Dashboard</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" data-section="usuarios" class="w-full flex items-center gap-3 px-3 py-2.5 rounded text-left border-l-2 border-transparent text-light-on-surface-variant dark:text-dark-on-surface-variant hover:bg-light-surface-container dark:hover:bg-dark-surface-container hover:text-light-on-surface dark:hover:text-dark-on-surface transition-colors duration-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-indigo">
+            <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span class="font-label text-label-lg">Usuarios</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" data-section="agentes" class="w-full flex items-center gap-3 px-3 py-2.5 rounded text-left border-l-2 border-transparent text-light-on-surface-variant dark:text-dark-on-surface-variant hover:bg-light-surface-container dark:hover:bg-dark-surface-container hover:text-light-on-surface dark:hover:text-dark-on-surface transition-colors duration-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-indigo">
+            <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+            </svg>
+            <span class="font-label text-label-lg">Agentes</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" data-section="skills" class="w-full flex items-center gap-3 px-3 py-2.5 rounded text-left border-l-2 border-transparent text-light-on-surface-variant dark:text-dark-on-surface-variant hover:bg-light-surface-container dark:hover:bg-dark-surface-container hover:text-light-on-surface dark:hover:text-dark-on-surface transition-colors duration-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-indigo">
+            <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"></path>
+            </svg>
+            <span class="font-label text-label-lg">Skills</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" data-section="contratos" class="w-full flex items-center gap-3 px-3 py-2.5 rounded text-left border-l-2 border-transparent text-light-on-surface-variant dark:text-dark-on-surface-variant hover:bg-light-surface-container dark:hover:bg-dark-surface-container hover:text-light-on-surface dark:hover:text-dark-on-surface transition-colors duration-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-indigo">
+            <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+            <span class="font-label text-label-lg">Contrataciones</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" data-section="errores" class="w-full flex items-center gap-3 px-3 py-2.5 rounded text-left border-l-2 border-transparent text-light-on-surface-variant dark:text-dark-on-surface-variant hover:bg-light-surface-container dark:hover:bg-dark-surface-container hover:text-light-on-surface dark:hover:text-dark-on-surface transition-colors duration-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-indigo">
+            <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path>
+            </svg>
+            <span class="font-label text-label-lg">Log de errores</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Área de contenido -->
+  <div class="ml-56 lg:ml-64 min-h-screen flex flex-col">
+    <!-- Barra superior -->
+    <header class="sticky top-0 z-20 h-16 px-6 lg:px-8 bg-light-surface dark:bg-dark-surface border-b border-light-outline-variant dark:border-dark-outline-variant flex items-center justify-between">
+      <h1 id="page-title" class="font-headline text-headline-md text-light-on-surface dark:text-dark-on-surface">Dashboard</h1>
+      <button id="theme-toggle" type="button" aria-label="Cambiar modo claro/oscuro" aria-pressed="true" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-light-surface-container dark:bg-dark-surface-container border border-light-outline-variant dark:border-dark-outline-variant text-light-on-surface dark:text-dark-on-surface hover:bg-light-surface-container-high dark:hover:bg-dark-surface-container-high focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-indigo transition-colors duration-state-change">
+        <svg class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+        </svg>
+        <svg class="w-4 h-4 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        </svg>
+      </button>
+    </header>
+
+    <main class="flex-1 p-4 lg:p-8">
+      <!-- 1. Dashboard -->
+      <section id="sec-dashboard" aria-labelledby="page-title" class="flex flex-col gap-8">
+        <div id="dashboard-metricas" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        <!-- D4 · Gráfico de actividad semanal (barras con HTML + Tailwind; se rellena desde JS) -->
+        <section id="dashboard-actividad" aria-labelledby="actividad-titulo" class="w-full rounded-lg bg-light-surface dark:bg-dark-surface border border-light-outline-variant dark:border-dark-outline-variant shadow-sm p-6">
+          <header class="flex flex-col gap-1">
+            <h2 id="actividad-titulo" class="font-headline text-title-lg text-light-on-surface dark:text-dark-on-surface">Actividad semanal</h2>
+            <p class="font-body text-body-sm text-light-on-surface-variant dark:text-dark-on-surface-variant">Tareas ejecutadas por los agentes</p>
+          </header>
+          <ul id="actividad-barras" aria-label="Tareas ejecutadas por día" class="mt-4 grid grid-cols-7 gap-3 lg:gap-6"></ul>
+        </section>
+      </section>
+
+      <!-- 2. Gestión de usuarios -->
+      <section id="sec-usuarios" aria-label="Gestión de usuarios" class="hidden">
+        <div class="w-full rounded-lg bg-light-surface dark:bg-dark-surface border border-light-outline-variant dark:border-dark-outline-variant overflow-visible">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-light-outline-variant dark:border-dark-outline-variant bg-light-surface-container-low dark:bg-dark-surface-container-low">
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Nombre</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Email</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Plan</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Estado</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4 w-10 lg:w-12 text-right"><span class="sr-only">Acciones</span></th>
+              </tr>
+            </thead>
+            <tbody id="tbody-usuarios" class="divide-y divide-light-outline-variant dark:divide-dark-outline-variant"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 3. Gestión de agentes -->
+      <section id="sec-agentes" aria-label="Gestión de agentes" class="hidden">
+        <div class="w-full rounded-lg bg-light-surface dark:bg-dark-surface border border-light-outline-variant dark:border-dark-outline-variant overflow-visible">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-light-outline-variant dark:border-dark-outline-variant bg-light-surface-container-low dark:bg-dark-surface-container-low">
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Nombre</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Propietario</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Estado</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Skills</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4 w-10 lg:w-12 text-right"><span class="sr-only">Acciones</span></th>
+              </tr>
+            </thead>
+            <tbody id="tbody-agentes"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 4. Skills -->
+      <section id="sec-skills" aria-label="Skills" class="hidden flex flex-col gap-6">
+        <aside role="note" class="w-full rounded-lg bg-light-secondary-container dark:bg-brand-indigo-soft border border-brand-indigo-light-border dark:border-brand-indigo-border px-4 py-3.5 flex items-start gap-3">
+          <svg class="w-5 h-5 shrink-0 mt-0.5 text-light-on-secondary-container dark:text-brand-indigo-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path>
+          </svg>
+          <p class="font-body text-body-md text-light-on-secondary-container dark:text-brand-indigo-text">Una skill es una capacidad que se añade a un agente para ampliar lo que puede hacer, como navegar por la web, leer documentos o gestionar calendarios. Cada skill se factura por separado en €/mes.</p>
+        </aside>
+        <div id="skills-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch"></div>
+      </section>
+
+      <!-- 5. Contrataciones de agentes -->
+      <section id="sec-contratos" aria-label="Contrataciones de agentes" class="hidden">
+        <div class="w-full rounded-lg bg-light-surface dark:bg-dark-surface border border-light-outline-variant dark:border-dark-outline-variant overflow-visible">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-light-outline-variant dark:border-dark-outline-variant bg-light-surface-container-low dark:bg-dark-surface-container-low">
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Cliente</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Agente</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Skills</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Inicio / Fin</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Estado</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4 text-right"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Importe</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4 w-10 lg:w-12 text-right"><span class="sr-only">Acciones</span></th>
+              </tr>
+            </thead>
+            <tbody id="tbody-contratos" class="divide-y divide-light-outline-variant dark:divide-dark-outline-variant"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 6. Log de errores -->
+      <section id="sec-errores" aria-label="Log de errores" class="hidden">
+        <div class="w-full rounded-lg bg-light-surface dark:bg-dark-surface border border-light-outline-variant dark:border-dark-outline-variant overflow-visible">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-light-outline-variant dark:border-dark-outline-variant bg-light-surface-container-low dark:bg-dark-surface-container-low">
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Fecha y hora</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Agente</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Gravedad</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4"><span class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Descripción</span></th>
+                <th scope="col" class="py-3 px-2 lg:px-4 w-10 lg:w-12 text-right"><span class="sr-only">Acciones</span></th>
+              </tr>
+            </thead>
+            <tbody id="tbody-errores" class="divide-y divide-light-outline-variant dark:divide-dark-outline-variant"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal único reutilizable -->
+  <div id="modal-backdrop" class="hidden flex fixed inset-0 z-50 bg-black/40 dark:bg-black/60 items-center justify-center p-4">
+    <div id="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title" class="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-xl bg-light-surface dark:bg-dark-surface-container border border-light-outline-variant dark:border-dark-outline-variant shadow-2xl">
+      <div class="flex items-center justify-between gap-4 px-6 py-4 border-b border-light-outline-variant dark:border-dark-outline-variant">
+        <h2 id="modal-title" class="font-headline text-title-lg text-light-on-surface dark:text-dark-on-surface"></h2>
+        <button id="modal-close" type="button" aria-label="Cerrar" class="inline-flex items-center justify-center w-8 h-8 rounded text-light-on-surface-variant dark:text-dark-on-surface-variant hover:bg-light-surface-container dark:hover:bg-dark-surface-container-high focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-indigo transition-colors duration-state-change">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div id="modal-body" class="p-6"></div>
+      <div id="modal-footer" class="hidden flex items-center justify-end gap-3 px-6 py-4 border-t border-light-outline-variant dark:border-dark-outline-variant"></div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       2.1 · Dataset (spec §2.4). Fechas en ISO; se formatean al pintar.
+       ========================================================= */
+    const empresas = [
+      { id: 'e1', nombre: 'Nexora Logística' },
+      { id: 'e2', nombre: 'Bravia Retail' },
+      { id: 'e3', nombre: 'Lumen Salud' },
+      { id: 'e4', nombre: 'Tercia Finanzas' },
+      { id: 'e5', nombre: 'Ondara Legal' },
+    ];
+
+    const skills = [
+      { id: 's1', nombre: 'Navegación web', precio: 29, eliminado: false,
+        descripcionBreve: 'Consulta y extrae información de páginas web.',
+        descripcionAmplia: 'Permite al agente abrir direcciones web, seguir enlaces, usar buscadores y extraer contenido estructurado de páginas públicas. Útil para vigilar la competencia, verificar datos o investigar.' },
+      { id: 's2', nombre: 'Lectura de documentos', precio: 19, eliminado: false,
+        descripcionBreve: 'Lee PDF, Word y hojas de cálculo.',
+        descripcionAmplia: 'Extrae texto, tablas y metadatos de PDF (incluidos los escaneados, mediante reconocimiento de texto), documentos Word y hojas de cálculo para resumirlos, clasificarlos o responder preguntas sobre su contenido.' },
+      { id: 's3', nombre: 'Gestión de calendarios', precio: 15, eliminado: false,
+        descripcionBreve: 'Crea y reprograma eventos.',
+        descripcionAmplia: 'Se conecta a los calendarios corporativos para consultar disponibilidad, crear, mover o cancelar eventos y enviar invitaciones sin crear solapamientos.' },
+      { id: 's4', nombre: 'Envío de correos', precio: 12, eliminado: false,
+        descripcionBreve: 'Redacta y envía emails.',
+        descripcionAmplia: 'Redacta respuestas y campañas, las envía desde la cuenta autorizada de la empresa y respeta los límites de envío por hora.' },
+      { id: 's5', nombre: 'Análisis de datos', precio: 35, eliminado: false,
+        descripcionBreve: 'Calcula métricas y genera informes.',
+        descripcionAmplia: 'Procesa datos tabulares, calcula indicadores clave, detecta anomalías y genera informes resumidos listos para la dirección.' },
+      { id: 's6', nombre: 'Integración CRM', precio: 25, eliminado: false,
+        descripcionBreve: 'Sincroniza leads y oportunidades.',
+        descripcionAmplia: 'Lee y actualiza contactos, leads y oportunidades en el CRM del cliente para mantener el embudo comercial al día.' },
+    ];
+
+    const agentes = [
+      { id: 'a1', nombre: 'Atlas Soporte', empresaId: 'e1', estado: 'activo', skillIds: ['s1', 's2', 's4'], eliminado: false,
+        prompt: 'Eres Atlas, agente de soporte de Nexora Logística. Resuelve incidencias de envíos con tono cordial y escala a un humano si no puedes resolverlas en dos intentos.' },
+      { id: 'a2', nombre: 'Clara Agenda', empresaId: 'e3', estado: 'activo', skillIds: ['s3', 's4'], eliminado: false,
+        prompt: 'Eres Clara, asistente de citas de Lumen Salud. Gestiona las citas de los pacientes, confirma por email y no compartas nunca datos clínicos.' },
+      { id: 'a3', nombre: 'Orion Ventas', empresaId: 'e2', estado: 'fallando', skillIds: ['s1', 's6', 's5'], eliminado: false,
+        prompt: 'Eres Orion, agente comercial de Bravia Retail. Cualifica leads, actualiza el CRM y resume las oportunidades cada mañana.' },
+      { id: 'a4', nombre: 'Vega Finanzas', empresaId: 'e4', estado: 'fallando', skillIds: ['s2', 's5'], eliminado: false,
+        prompt: 'Eres Vega, analista financiero de Tercia Finanzas. Procesa facturas y genera el informe de tesorería semanal.' },
+      { id: 'a5', nombre: 'Lex Contratos', empresaId: 'e5', estado: 'inactivo', skillIds: ['s2'], eliminado: false,
+        prompt: 'Eres Lex, asistente legal de Ondara Legal. Revisa contratos y señala cláusulas de riesgo sin dar asesoramiento jurídico vinculante.' },
+      { id: 'a6', nombre: 'Nova Marketing', empresaId: 'e2', estado: 'activo', skillIds: ['s1', 's5', 's4', 's6'], eliminado: false,
+        prompt: 'Eres Nova, agente de marketing de Bravia Retail. Analiza campañas, propone mejoras y envía el informe semanal al equipo.' },
+    ];
+
+    const usuarios = [
+      { id: 'u1', nombre: 'Laura Méndez', email: 'laura.mendez@nexora.example', plan: 'Gold', estado: 'activo', alta: '2025-01-12', empresaId: 'e1', agenteIds: ['a1'] },
+      { id: 'u2', nombre: 'Diego Ramírez', email: 'diego.ramirez@bravia.example', plan: 'Gold', estado: 'activo', alta: '2025-03-03', empresaId: 'e2', agenteIds: ['a3', 'a6'] },
+      { id: 'u3', nombre: 'Sofía Castro', email: 'sofia.castro@lumen.example', plan: 'Silver', estado: 'activo', alta: '2025-04-20', empresaId: 'e3', agenteIds: ['a2'] },
+      { id: 'u4', nombre: 'Javier Ortega', email: 'javier.ortega@tercia.example', plan: 'Gold', estado: 'activo', alta: '2025-07-08', empresaId: 'e4', agenteIds: ['a4'] },
+      { id: 'u5', nombre: 'Marta Iglesias', email: 'marta.iglesias@ondara.example', plan: 'Silver', estado: 'inactivo', alta: '2025-08-15', empresaId: 'e5', agenteIds: ['a5'] },
+      { id: 'u6', nombre: 'Pablo Serrano', email: 'pablo.serrano@bravia.example', plan: 'Silver', estado: 'inactivo', alta: '2025-10-02', empresaId: 'e2', agenteIds: ['a6'] },
+    ];
+
+    // El importe no se guarda: se calcula con los precios del catálogo × meses.
+    const contratos = [
+      { id: 'c1', empresaId: 'e1', agenteId: 'a1', skillIds: ['s1', 's2', 's4'], inicio: '2026-03-01', fin: null, estado: 'activo', meses: 9 },
+      { id: 'c2', empresaId: 'e3', agenteId: 'a2', skillIds: ['s3', 's4'], inicio: '2026-05-15', fin: null, estado: 'activo', meses: 7 },
+      { id: 'c3', empresaId: 'e2', agenteId: 'a3', skillIds: ['s1', 's6', 's5'], inicio: '2026-02-01', fin: null, estado: 'activo', meses: 10 },
+      { id: 'c4', empresaId: 'e4', agenteId: 'a4', skillIds: ['s2', 's5'], inicio: '2026-01-10', fin: null, estado: 'activo', meses: 11 },
+      { id: 'c5', empresaId: 'e5', agenteId: 'a5', skillIds: ['s2'], inicio: '2025-09-01', fin: '2026-02-28', estado: 'finalizado', meses: 6 },
+      { id: 'c6', empresaId: 'e2', agenteId: 'a6', skillIds: ['s1', 's5', 's4', 's6'], inicio: '2026-06-01', fin: null, estado: 'activo', meses: 6 },
+      { id: 'c7', empresaId: 'e1', agenteId: 'a1', skillIds: ['s1', 's2'], inicio: '2025-01-01', fin: '2025-12-31', estado: 'finalizado', meses: 12 },
+    ];
+
+    const errores = [
+      { id: 'r1', timestamp: '2026-11-21T09:42', agenteId: 'a3', gravedad: 'grave', nombre: 'CRMAuthError',
+        descripcion: 'Token de acceso al CRM expirado; sincronización de leads detenida.',
+        traza: 'CRMAuthError: 401 Unauthorized\n  at CrmClient.refreshToken (crm/client.js:88)\n  at SyncJob.run (jobs/sync-leads.js:41)' },
+      { id: 'r2', timestamp: '2026-11-21T08:15', agenteId: 'a4', gravedad: 'grave', nombre: 'DataPipelineTimeout',
+        descripcion: 'Tiempo de espera agotado al procesar el informe de tesorería semanal.',
+        traza: 'TimeoutError: pipeline exceeded 120000ms\n  at Pipeline.execute (analytics/pipeline.py:212)\n  at ReportTask.build (tasks/treasury.py:57)' },
+      { id: 'r3', timestamp: '2026-11-20T17:30', agenteId: 'a3', gravedad: 'medio', nombre: 'WebScrapeBlocked',
+        descripcion: 'Acceso denegado (403) al navegar por el catálogo de un competidor.',
+        traza: 'HTTPError: 403 Forbidden https://competidor.example/catalogo\n  at Browser.fetch (web/browser.js:134)' },
+      { id: 'r4', timestamp: '2026-11-20T11:05', agenteId: 'a1', gravedad: 'leve', nombre: 'MailRateLimit',
+        descripcion: 'Límite de envío alcanzado; correos en cola.',
+        traza: 'RateLimitError: 100 msgs/h exceeded\n  at Mailer.send (mail/mailer.js:72)' },
+      { id: 'r5', timestamp: '2026-11-19T16:48', agenteId: 'a4', gravedad: 'medio', nombre: 'PDFParseError',
+        descripcion: 'No se pudo extraer la tabla de una factura escaneada.',
+        traza: 'ParseError: no table found on page 2\n  at PdfReader.extractTables (docs/pdf.py:98)' },
+      { id: 'r6', timestamp: '2026-11-18T10:20', agenteId: 'a6', gravedad: 'leve', nombre: 'SlowResponse',
+        descripcion: 'Latencia superior a 8 segundos en una consulta de análisis.',
+        traza: 'Warning: response_time=8412ms > 8000ms\n  at Monitor.check (core/monitor.js:30)' },
+      { id: 'r7', timestamp: '2026-11-17T14:02', agenteId: 'a2', gravedad: 'medio', nombre: 'CalendarSyncConflict',
+        descripcion: 'Conflicto al crear un evento duplicado.',
+        traza: 'ConflictError: event overlaps id=ev_5521\n  at Calendar.create (cal/api.js:61)' },
+    ];
+
+    // Variaciones vs. mes anterior: datos fijos (spec §2.4), se muestran tal cual.
+    const metricas = {
+      ingresosMes: 331, variacionIngresos: '+12 %',
+      perdidasDescuentos: 48, variacionPerdidas: '−5 %',
+    };
+
+    // D4 · Actividad semanal: tareas ejecutadas por los agentes (dato fijo, spec §2.4)
+    const actividadSemanal = [
+      { dia: 'Lunes', inicial: 'L', tareas: 42 },
+      { dia: 'Martes', inicial: 'M', tareas: 58 },
+      { dia: 'Miércoles', inicial: 'X', tareas: 51 },
+      { dia: 'Jueves', inicial: 'J', tareas: 67 },
+      { dia: 'Viernes', inicial: 'V', tareas: 73 },
+      { dia: 'Sábado', inicial: 'S', tareas: 29 },
+      { dia: 'Domingo', inicial: 'D', tareas: 18 },
+    ];
+
+    /* =========================================================
+       2.2 · Búsqueda por id y formatos
+       ========================================================= */
+    const getEmpresa = (id) => empresas.find((e) => e.id === id);
+    const getAgente = (id) => agentes.find((a) => a.id === id);
+    const getSkill = (id) => skills.find((s) => s.id === id);
+
+    // "540,00 €" (coma decimal, símbolo detrás)
+    const fmtEuro = (n) =>
+      new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n) + ' €';
+    // '2026-03-01' → '01/03/26'
+    const fmtFecha = (iso) => {
+      if (!iso) return '';
+      const [y, m, d] = iso.slice(0, 10).split('-');
+      return `${d}/${m}/${y.slice(2)}`;
+    };
+    // '2026-11-21T09:42' → '21/11/26 09:42'
+    const fmtFechaHora = (iso) => `${fmtFecha(iso)} ${iso.slice(11, 16)}`;
+    const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+
+    /* =========================================================
+       2.3 · Datos derivados
+       ========================================================= */
+    const precioMensualContrato = (c) => c.skillIds.reduce((t, id) => t + getSkill(id).precio, 0);
+    const importeContrato = (c) => precioMensualContrato(c) * c.meses;
+    const agentesVisibles = () => agentes.filter((a) => !a.eliminado);
+    const skillsVisibles = () => skills.filter((s) => !s.eliminado);
+    const agentesConSkill = (skillId) => agentesVisibles().filter((a) => a.skillIds.includes(skillId));
+    const contarAgentesPorEstado = (estado) => agentesVisibles().filter((a) => a.estado === estado).length;
+
+    /* =========================================================
+       Utilidades DOM (el texto de datos siempre va por textContent)
+       ========================================================= */
+    function el(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined && text !== null) node.textContent = text;
+      return node;
+    }
+    // Solo para iconos SVG constantes definidos en este archivo, nunca para datos.
+    function icon(markup, className) {
+      const tpl = document.createElement('template');
+      tpl.innerHTML = `<svg class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${markup}</svg>`;
+      return tpl.content.firstElementChild;
+    }
+    const ICONOS = {
+      billete: '<rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path>',
+      cupon: '<path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M13 5v2M13 17v2M13 11v2"></path>',
+      check: '<circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path>',
+      alerta: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path>',
+      puntos: '<circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle>',
+      chevron: '<path d="m6 9 6 6 6-6"></path>',
+    };
+
+    const TXT_PRINCIPAL = 'text-light-on-surface dark:text-dark-on-surface';
+    const TXT_SECUNDARIO = 'text-light-on-surface-variant dark:text-dark-on-surface-variant';
+    const FILA = 'hover:bg-light-surface-container-low dark:hover:bg-dark-surface-container transition-colors duration-state-change';
+    // En tablet (768–1023 px) el padding horizontal baja a px-2 para que quepan las 7 columnas de Contrataciones.
+    const CELDA = 'py-3.5 px-2 lg:px-4';
+
+    /* =========================================================
+       2.4 · Badge con su par claro/oscuro
+       ========================================================= */
+    const BADGE_COLORES = {
+      green: 'bg-accent-green-light-soft text-accent-green-light-text dark:bg-accent-green-soft dark:text-accent-green-text',
+      gray: 'bg-accent-neutral-light-soft text-accent-neutral-light-text dark:bg-accent-neutral-soft dark:text-accent-neutral-text',
+      red: 'bg-accent-red-light-soft text-accent-red-light-text dark:bg-accent-red-soft dark:text-accent-red-text',
+      yellow: 'bg-accent-yellow-light-soft text-accent-yellow-light-text dark:bg-accent-yellow-soft dark:text-accent-yellow-text',
+      orange: 'bg-accent-orange-light-soft text-accent-orange-light-text dark:bg-accent-orange-soft dark:text-accent-orange-text',
+      blue: 'bg-accent-blue-light-soft text-accent-blue-light-text dark:bg-accent-blue-soft dark:text-accent-blue-text',
+    };
+    function badge(texto, color) {
+      const span = el('span', `inline-flex items-center px-2.5 py-0.5 rounded-full whitespace-nowrap ${BADGE_COLORES[color]}`);
+      span.append(el('span', 'font-label text-label-sm', texto));
+      return span;
+    }
+    const ESTADO_AGENTE = { activo: ['Activo', 'green'], inactivo: ['Inactivo', 'gray'], fallando: ['Fallando', 'red'] };
+    const ESTADO_USUARIO = { activo: ['Activo', 'green'], inactivo: ['Inactivo', 'gray'] };
+    const ESTADO_CONTRATO = { activo: ['Activo', 'green'], finalizado: ['Finalizado', 'gray'] };
+    const GRAVEDAD = { leve: ['Leve', 'yellow'], medio: ['Medio', 'orange'], grave: ['Grave', 'red'] };
+    const badgeDe = (mapa, clave) => badge(mapa[clave][0], mapa[clave][1]);
+
+    /* =========================================================
+       4.1–4.3 · Dropdown de acciones (⋮ + menú)
+       opciones: [{ texto, accion, peligro?, deshabilitado? }]
+       arriba: true en las 2 últimas filas de una tabla (4.6)
+       ========================================================= */
+    let menuSeq = 0;
+    function disparadorAcciones(tipo, id, etiqueta, opciones, arriba = false) {
+      const wrap = el('div', 'relative inline-block text-left');
+      wrap.dataset.dropdown = tipo;
+      wrap.dataset.id = id;
+      const menuId = `menu-${++menuSeq}`;
+
+      const btn = el('button', `inline-flex items-center justify-center w-8 h-8 rounded ${TXT_SECUNDARIO} hover:bg-light-surface-container dark:hover:bg-dark-surface-container-high aria-expanded:bg-light-surface-container dark:aria-expanded:bg-dark-surface-container-high focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-indigo transition-colors duration-state-change`);
+      btn.type = 'button';
+      btn.dataset.menuTrigger = '';
+      btn.setAttribute('aria-label', `Acciones de ${etiqueta}`);
+      btn.setAttribute('aria-haspopup', 'menu');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-controls', menuId);
+      btn.append(icon(ICONOS.puntos, 'w-4 h-4'));
+
+      const menu = el('ul', `hidden absolute right-0 z-30 w-44 py-1 rounded bg-light-surface dark:bg-dark-surface-container border border-light-outline-variant dark:border-dark-outline-variant shadow-xl text-left ${arriba ? 'bottom-full mb-1' : 'top-full mt-1'}`);
+      menu.id = menuId;
+      menu.setAttribute('role', 'menu');
+      menu.setAttribute('aria-label', `Acciones de ${etiqueta}`);
+      opciones.forEach((op) => {
+        const li = el('li');
+        li.setAttribute('role', 'none');
+        const color = op.peligro ? 'text-accent-red-light-text dark:text-accent-red-text' : TXT_PRINCIPAL;
+        const item = el('button', `w-full px-3 py-2 text-left font-body text-body-sm ${color} hover:bg-light-surface-container dark:hover:bg-dark-surface-container-high focus-visible:outline-none focus-visible:bg-light-surface-container dark:focus-visible:bg-dark-surface-container-high transition-colors duration-state-change`, op.texto);
+        item.type = 'button';
+        item.setAttribute('role', 'menuitem');
+        item.dataset.accion = op.accion;
+        if (op.deshabilitado) {
+          // 4.7 · opción deshabilitada: atenuada y sin respuesta al clic
+          item.disabled = true;
+          item.setAttribute('aria-disabled', 'true');
+          item.classList.add('opacity-50', 'cursor-not-allowed');
+          item.classList.remove('hover:bg-light-surface-container', 'dark:hover:bg-dark-surface-container-high');
+        }
+        li.append(item);
+        menu.append(li);
+      });
+
+      wrap.append(btn, menu);
+      return wrap;
+    }
+
+    const OPCIONES = {
+      usuario: () => [{ texto: 'Ver detalle', accion: 'ver' }, { texto: 'Eliminar', accion: 'eliminar', peligro: true }],
+      agente: () => [{ texto: 'Configurar', accion: 'configurar' }, { texto: 'Eliminar', accion: 'eliminar', peligro: true }],
+      skill: () => [{ texto: 'Ver detalle', accion: 'ver' }, { texto: 'Eliminar', accion: 'eliminar', peligro: true }],
+      contrato: (c) => [{ texto: 'Ver detalle', accion: 'ver' }, { texto: 'Finalizar contrato', accion: 'finalizar', deshabilitado: c.estado === 'finalizado' }],
+      error: () => [{ texto: 'Ver detalle', accion: 'ver' }, { texto: 'Marcar como resuelto', accion: 'resolver' }],
+    };
+
+    // 2.11 · Fila de lista vacía
+    function filaVacia(colspan, mensaje) {
+      const tr = el('tr');
+      const td = el('td', `py-8 px-4 text-center font-body text-body-md ${TXT_SECUNDARIO}`, mensaje);
+      td.colSpan = colspan;
+      tr.append(td);
+      return tr;
+    }
+
+    /* =========================================================
+       2.5 · Dashboard
+       ========================================================= */
+    // Colores de acento por tarjeta (spec §2.3 y D2), con su par claro/oscuro:
+    // - fondo: degradado del acento hacia transparente (más tenue en claro)
+    // - icono: blanco sobre el acento intenso (igual en ambos modos)
+    // - valor: tono oscuro del acento en claro, tono claro en oscuro
+    // - franja: acento medio
+    const ACENTOS = {
+      blue: {
+        franja: 'bg-accent-blue',
+        fondo: 'from-accent-blue/10 dark:from-accent-blue/20',
+        icono: 'bg-accent-blue',
+        valor: 'text-accent-blue-light-text dark:text-accent-blue-text',
+      },
+      purple: {
+        franja: 'bg-accent-purple',
+        fondo: 'from-accent-purple/10 dark:from-accent-purple/20',
+        icono: 'bg-accent-purple',
+        valor: 'text-accent-purple-light-text dark:text-accent-purple-text',
+      },
+      green: {
+        franja: 'bg-accent-green',
+        fondo: 'from-accent-green/10 dark:from-accent-green/20',
+        icono: 'bg-accent-green',
+        valor: 'text-accent-green-light-text dark:text-accent-green-text',
+      },
+      red: {
+        franja: 'bg-accent-red',
+        fondo: 'from-accent-red/10 dark:from-accent-red/20',
+        icono: 'bg-accent-red',
+        valor: 'text-accent-red-light-text dark:text-accent-red-text',
+      },
+    };
+    function tarjetaMetrica(iconoMarkup, etiqueta, valor, contexto, acento) {
+      const a = ACENTOS[acento];
+      const card = el('article', `relative overflow-hidden rounded-lg bg-light-surface dark:bg-dark-surface bg-gradient-to-br ${a.fondo} to-transparent border border-light-outline-variant dark:border-dark-outline-variant shadow-sm p-6 pl-7 flex flex-col gap-4`);
+      card.dataset.acento = acento;
+      const franja = el('div', `absolute inset-y-0 left-0 w-1 ${a.franja}`);
+      franja.setAttribute('aria-hidden', 'true');
+      const caja = el('div', `w-12 h-12 rounded-lg flex items-center justify-center text-white shadow-sm ${a.icono}`);
+      caja.append(icon(iconoMarkup, 'w-6 h-6'));
+      const textos = el('div', 'flex flex-col gap-1');
+      const pValor = el('p', `font-headline text-display-lg ${a.valor} tabular-nums`, valor);
+      pValor.dataset.metricaValor = '';
+      const pContexto = el('p', `font-body text-body-sm ${TXT_SECUNDARIO}`, contexto);
+      pContexto.dataset.metricaContexto = '';
+      textos.append(el('p', `font-body text-body-sm ${TXT_SECUNDARIO}`, etiqueta), pValor, pContexto);
+      card.append(franja, caja, textos);
+      return card;
+    }
+    // D4 · Altura de barra = valor / máximo, en % entero del área (regla de spec §2.4).
+    // La altura va en una clase arbitraria de Tailwind (h-[58%]), nunca en un atributo style.
+    const alturaBarra = (valor, maximo) => Math.round((valor / maximo) * 100);
+    function renderActividad() {
+      const maximo = Math.max(...actividadSemanal.map((d) => d.tareas));
+      document.getElementById('actividad-barras').replaceChildren(...actividadSemanal.map((d) => {
+        const li = el('li', 'flex flex-col items-center gap-2');
+        li.dataset.dia = d.inicial;
+        // Texto para lectores de pantalla: "Lunes: 42 tareas"
+        li.append(el('span', 'sr-only', `${d.dia}: ${d.tareas} tareas`));
+
+        // Área de barras de 192 px (h-48), con hueco arriba (pt-6) para el valor de la barra más alta
+        const area = el('div', 'w-full pt-6');
+        area.setAttribute('aria-hidden', 'true');
+        const pista = el('div', 'h-48 flex items-end justify-center');
+        const barra = el('div', `relative w-full max-w-[56px] h-[${alturaBarra(d.tareas, maximo)}%] rounded-t-md bg-brand-indigo`);
+        barra.dataset.barra = String(d.tareas);
+        barra.append(el('span', `absolute -top-6 inset-x-0 text-center font-label text-label-md ${TXT_PRINCIPAL} tabular-nums`, String(d.tareas)));
+        pista.append(barra);
+        area.append(pista);
+
+        const etiqueta = el('span', `font-label text-label-md ${TXT_SECUNDARIO}`, d.inicial);
+        etiqueta.setAttribute('aria-hidden', 'true');
+        li.append(area, etiqueta);
+        return li;
+      }));
+    }
+
+    function renderDashboard() {
+      renderActividad();
+      const total = agentesVisibles().length;
+      document.getElementById('dashboard-metricas').replaceChildren(
+        tarjetaMetrica(ICONOS.billete, 'Ingresos totales (este mes)', fmtEuro(metricas.ingresosMes), `${metricas.variacionIngresos} vs. mes anterior`, 'blue'),
+        tarjetaMetrica(ICONOS.cupon, 'Pérdidas por descuentos y cupones', fmtEuro(metricas.perdidasDescuentos), `${metricas.variacionPerdidas} vs. mes anterior`, 'purple'),
+        tarjetaMetrica(ICONOS.check, 'Agentes activos', String(contarAgentesPorEstado('activo')), `de ${plural(total, 'agente', 'agentes')} en total`, 'green'),
+        tarjetaMetrica(ICONOS.alerta, 'Agentes fallando', String(contarAgentesPorEstado('fallando')), 'con errores recientes', 'red')
+      );
+    }
+
+    /* =========================================================
+       2.6 · Gestión de usuarios
+       ========================================================= */
+    function renderUsuarios() {
+      const tbody = document.getElementById('tbody-usuarios');
+      if (usuarios.length === 0) return tbody.replaceChildren(filaVacia(5, 'No hay usuarios registrados.'));
+      tbody.replaceChildren(...usuarios.map((u, i) => {
+        const tr = el('tr', FILA);
+        const tdNombre = el('td', CELDA); tdNombre.append(el('span', `font-body text-body-md font-medium ${TXT_PRINCIPAL}`, u.nombre));
+        const tdEmail = el('td', `${CELDA} break-all`); tdEmail.append(el('span', `font-body text-body-md ${TXT_SECUNDARIO}`, u.email));
+        const tdPlan = el('td', CELDA); tdPlan.append(el('span', `font-body text-body-md ${TXT_PRINCIPAL}`, u.plan));
+        const tdEstado = el('td', CELDA); tdEstado.append(badgeDe(ESTADO_USUARIO, u.estado));
+        const tdAcc = el('td', `${CELDA} text-right`); tdAcc.append(disparadorAcciones('usuario', u.id, u.nombre, OPCIONES.usuario(u), i >= usuarios.length - 2));
+        tr.append(tdNombre, tdEmail, tdPlan, tdEstado, tdAcc);
+        return tr;
+      }));
+    }
+
+    /* =========================================================
+       2.7 · Gestión de agentes (fila + sub-fila de skills colapsada)
+       ========================================================= */
+    // Estilos del botón "N skills": colapsado (Stitch gestion_agentes.html) y
+    // expandido (Stitch gestion_agentes_skills_exp.html, con su par claro/oscuro).
+    const SKILLS_BTN = {
+      base: 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded border whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-indigo transition-colors duration-state-change',
+      colapsado: ['bg-light-surface-container', 'dark:bg-dark-surface-container', 'border-light-outline-variant', 'dark:border-dark-outline-variant', 'text-light-on-surface', 'dark:text-dark-on-surface', 'hover:bg-light-surface-container-high', 'dark:hover:bg-dark-surface-container-high'],
+      expandido: ['bg-light-secondary-container', 'dark:bg-brand-indigo-soft', 'border-brand-indigo-light-border', 'dark:border-brand-indigo-border', 'text-light-on-secondary-container', 'dark:text-brand-indigo-text'],
+    };
+    const CAJON = { cerrado: ['max-h-0', 'opacity-0'], abierto: ['max-h-40', 'opacity-100'] };
+    function renderAgentes() {
+      const tbody = document.getElementById('tbody-agentes');
+      const lista = agentesVisibles();
+      if (lista.length === 0) return tbody.replaceChildren(filaVacia(5, 'No hay agentes registrados.'));
+      const filas = [];
+      lista.forEach((a, i) => {
+        const tr = el('tr', `${FILA} border-t border-light-outline-variant dark:border-dark-outline-variant first:border-t-0`);
+        tr.dataset.agente = a.id;
+        const tdNombre = el('td', CELDA); tdNombre.append(el('span', `font-body text-body-md font-medium ${TXT_PRINCIPAL}`, a.nombre));
+        const tdProp = el('td', CELDA); tdProp.append(el('span', `font-body text-body-md ${TXT_SECUNDARIO}`, getEmpresa(a.empresaId).nombre));
+        const tdEstado = el('td', CELDA); tdEstado.append(badgeDe(ESTADO_AGENTE, a.estado));
+
+        const tdSkills = el('td', CELDA);
+        const btn = el('button', `${SKILLS_BTN.base} ${SKILLS_BTN.colapsado.join(' ')}`);
+        btn.type = 'button';
+        btn.dataset.skillsToggle = a.id;
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-controls', `skills-${a.id}`);
+        btn.append(
+          el('span', 'font-label text-label-md tabular-nums', plural(a.skillIds.length, 'skill', 'skills')),
+          icon(ICONOS.chevron, 'w-3.5 h-3.5 transition-transform duration-drawer-toggle')
+        );
+        tdSkills.append(btn);
+
+        const tdAcc = el('td', `${CELDA} text-right`); tdAcc.append(disparadorAcciones('agente', a.id, a.nombre, OPCIONES.agente(a), i >= lista.length - 2));
+        tr.append(tdNombre, tdProp, tdEstado, tdSkills, tdAcc);
+
+        // Sub-fila: siempre presente, colapsada por defecto (la animación es de la Fase 6).
+        const sub = el('tr');
+        const tdSub = el('td', 'p-0');
+        tdSub.colSpan = 5;
+        const cajon = el('div', 'overflow-hidden transition-all duration-drawer-toggle ease-drawer-toggle max-h-0 opacity-0');
+        cajon.id = `skills-${a.id}`;
+        const contenido = el('div', 'px-6 py-3.5 flex flex-wrap items-center gap-2 bg-light-surface-container-low dark:bg-dark-surface-container-low');
+        contenido.append(el('span', `font-label text-label-sm ${TXT_SECUNDARIO} mr-1`, 'Skills equipadas:'));
+        const ul = el('ul', 'contents');
+        a.skillIds.forEach((sid) => {
+          const li = el('li', `inline-flex items-center px-2.5 py-1 rounded-sm bg-light-surface dark:bg-dark-surface-container border border-light-outline-variant dark:border-dark-outline-variant ${TXT_PRINCIPAL}`);
+          li.append(el('span', 'font-label text-label-md', getSkill(sid).nombre));
+          ul.append(li);
+        });
+        contenido.append(ul);
+        cajon.append(contenido);
+        tdSub.append(cajon);
+        sub.append(tdSub);
+
+        filas.push(tr, sub);
+      });
+      tbody.replaceChildren(...filas);
+    }
+
+    /* =========================================================
+       2.8 · Skills (el callout es estático en el HTML)
+       ========================================================= */
+    function renderSkills() {
+      const grid = document.getElementById('skills-grid');
+      const lista = skillsVisibles();
+      if (lista.length === 0) {
+        return grid.replaceChildren(el('p', `col-span-full py-8 text-center font-body text-body-md ${TXT_SECUNDARIO}`, 'No hay skills en el catálogo.'));
+      }
+      grid.replaceChildren(...lista.map((s) => {
+        const card = el('article', 'h-full rounded-lg bg-light-surface dark:bg-dark-surface border border-light-outline-variant dark:border-dark-outline-variant p-5 flex flex-col justify-between gap-4');
+        const arriba = el('div', 'flex flex-col gap-2');
+        const cab = el('header', 'flex items-start justify-between gap-3');
+        cab.append(el('h2', `font-headline text-title-lg ${TXT_PRINCIPAL}`, s.nombre), disparadorAcciones('skill', s.id, s.nombre, OPCIONES.skill(s)));
+        arriba.append(cab, el('p', `font-body text-body-md ${TXT_SECUNDARIO}`, s.descripcionBreve));
+        const pie = el('footer', 'flex items-center');
+        pie.append(badge(plural(agentesConSkill(s.id).length, 'agente', 'agentes'), 'blue'));
+        card.append(arriba, pie);
+        return card;
+      }));
+    }
+
+    /* =========================================================
+       2.9 · Contrataciones
+       ========================================================= */
+    function renderContratos() {
+      const tbody = document.getElementById('tbody-contratos');
+      if (contratos.length === 0) return tbody.replaceChildren(filaVacia(7, 'No hay contratos registrados.'));
+      tbody.replaceChildren(...contratos.map((c, i) => {
+        const agente = getAgente(c.agenteId);
+        const cliente = getEmpresa(c.empresaId);
+        const tr = el('tr', FILA);
+        const tdCliente = el('td', CELDA); tdCliente.append(el('span', `font-body text-body-md font-medium ${TXT_PRINCIPAL}`, cliente.nombre));
+        const tdAgente = el('td', CELDA); tdAgente.append(el('span', `font-body text-body-md ${TXT_SECUNDARIO}`, agente.nombre));
+        const tdSkills = el('td', CELDA); tdSkills.append(el('span', `font-body text-body-sm ${TXT_SECUNDARIO} tabular-nums whitespace-nowrap`, plural(c.skillIds.length, 'skill', 'skills')));
+        const tdFechas = el('td', CELDA);
+        const pila = el('div', 'flex flex-col');
+        pila.append(el('span', `font-body text-body-sm ${TXT_PRINCIPAL} tabular-nums`, fmtFecha(c.inicio)));
+        if (c.fin) pila.append(el('span', `font-label text-label-sm ${TXT_SECUNDARIO} tabular-nums`, fmtFecha(c.fin)));
+        tdFechas.append(pila);
+        const tdEstado = el('td', CELDA); tdEstado.append(badgeDe(ESTADO_CONTRATO, c.estado));
+        const tdImporte = el('td', `${CELDA} text-right`);
+        tdImporte.append(el('span', `font-body text-body-md font-medium ${TXT_PRINCIPAL} tabular-nums whitespace-nowrap`, fmtEuro(importeContrato(c))));
+        const tdAcc = el('td', `${CELDA} text-right`); tdAcc.append(disparadorAcciones('contrato', c.id, `${agente.nombre} — ${cliente.nombre}`, OPCIONES.contrato(c), i >= contratos.length - 2));
+        tr.append(tdCliente, tdAgente, tdSkills, tdFechas, tdEstado, tdImporte, tdAcc);
+        return tr;
+      }));
+    }
+
+    /* =========================================================
+       2.10 · Log de errores (orden: más reciente primero)
+       ========================================================= */
+    function renderErrores() {
+      const tbody = document.getElementById('tbody-errores');
+      if (errores.length === 0) return tbody.replaceChildren(filaVacia(5, 'No hay errores pendientes.'));
+      const ordenados = [...errores].sort((x, y) => y.timestamp.localeCompare(x.timestamp));
+      tbody.replaceChildren(...ordenados.map((e, i) => {
+        const tr = el('tr', FILA);
+        const tdFecha = el('td', CELDA); tdFecha.append(el('span', `font-body text-body-sm ${TXT_PRINCIPAL} tabular-nums whitespace-nowrap`, fmtFechaHora(e.timestamp)));
+        const tdAgente = el('td', CELDA); tdAgente.append(el('span', `font-body text-body-md font-medium ${TXT_PRINCIPAL}`, getAgente(e.agenteId).nombre));
+        const tdGrav = el('td', CELDA); tdGrav.append(badgeDe(GRAVEDAD, e.gravedad));
+        const tdDesc = el('td', CELDA); tdDesc.append(el('span', `font-body text-body-md ${TXT_SECUNDARIO}`, e.descripcion));
+        const tdAcc = el('td', `${CELDA} text-right`); tdAcc.append(disparadorAcciones('error', e.id, e.nombre, OPCIONES.error(e), i >= ordenados.length - 2));
+        tr.append(tdFecha, tdAgente, tdGrav, tdDesc, tdAcc);
+        return tr;
+      }));
+    }
+
+    function renderAll() {
+      renderDashboard();
+      renderUsuarios();
+      renderAgentes();
+      renderSkills();
+      renderContratos();
+      renderErrores();
+    }
+
+    /* =========================================================
+       FASE 3 · Navegación entre secciones
+       ========================================================= */
+    const TITULOS = {
+      dashboard: 'Dashboard',
+      usuarios: 'Gestión de usuarios',
+      agentes: 'Gestión de agentes',
+      skills: 'Skills',
+      contratos: 'Contrataciones de agentes',
+      errores: 'Log de errores',
+    };
+    const NAV_BASE = 'w-full flex items-center gap-3 px-3 py-2.5 rounded text-left border-l-2 transition-colors duration-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-indigo';
+    const NAV_ACTIVO = 'border-brand-indigo bg-light-secondary-container text-light-on-secondary-container dark:bg-brand-indigo-soft dark:text-brand-indigo-text font-semibold';
+    const NAV_INACTIVO = 'border-transparent text-light-on-surface-variant dark:text-dark-on-surface-variant hover:bg-light-surface-container dark:hover:bg-dark-surface-container hover:text-light-on-surface dark:hover:text-dark-on-surface';
+
+    function navegar(seccion) {
+      cerrarDropdowns();
+      renderAll(); // 3.4 · los datos derivados se recalculan al entrar
+      Object.keys(TITULOS).forEach((clave) => {
+        document.getElementById(`sec-${clave}`).classList.toggle('hidden', clave !== seccion);
+      });
+      document.getElementById('page-title').textContent = TITULOS[seccion];
+      document.querySelectorAll('nav button[data-section]').forEach((btn) => {
+        const activo = btn.dataset.section === seccion;
+        btn.className = `${NAV_BASE} ${activo ? NAV_ACTIVO : NAV_INACTIVO}`;
+        if (activo) btn.setAttribute('aria-current', 'page');
+        else btn.removeAttribute('aria-current');
+      });
+    }
+    document.querySelectorAll('nav button[data-section]').forEach((btn) => {
+      btn.addEventListener('click', () => navegar(btn.dataset.section));
+    });
+
+    /* =========================================================
+       FASE 7 · Modo claro/oscuro
+       Solo se toca la clase `dark` de <html>; la navegación no la cambia,
+       así que el modo elegido se mantiene entre secciones (7.2).
+       Los iconos sol/luna cambian solos con hidden dark:block / block dark:hidden.
+       ========================================================= */
+    const toggleTema = document.getElementById('theme-toggle');
+    toggleTema.addEventListener('click', () => {
+      const oscuro = document.documentElement.classList.toggle('dark');
+      toggleTema.setAttribute('aria-pressed', String(oscuro));
+    });
+
+    /* =========================================================
+       FASE 6 · Colapsable de skills (cada agente es independiente)
+       ========================================================= */
+    function alternarSkills(btn) {
+      const abrir = btn.getAttribute('aria-expanded') !== 'true';
+      const cajon = document.getElementById(btn.getAttribute('aria-controls'));
+      const chevron = btn.querySelector('svg');
+      btn.setAttribute('aria-expanded', String(abrir));
+      SKILLS_BTN.colapsado.forEach((c) => btn.classList.toggle(c, !abrir));
+      SKILLS_BTN.expandido.forEach((c) => btn.classList.toggle(c, abrir));
+      CAJON.cerrado.forEach((c) => cajon.classList.toggle(c, !abrir));
+      CAJON.abierto.forEach((c) => cajon.classList.toggle(c, abrir));
+      chevron.classList.toggle('rotate-180', abrir);
+    }
+    document.getElementById('tbody-agentes').addEventListener('click', (ev) => {
+      const btn = ev.target.closest('[data-skills-toggle]');
+      if (btn) alternarSkills(btn);
+    });
+
+    /* =========================================================
+       FASE 4 · Control de dropdowns
+       ========================================================= */
+    function cerrarDropdowns(excepto) {
+      document.querySelectorAll('[data-dropdown]').forEach((wrap) => {
+        if (wrap === excepto) return;
+        wrap.querySelector('[role="menu"]').classList.add('hidden');
+        wrap.querySelector('[data-menu-trigger]').setAttribute('aria-expanded', 'false');
+      });
+    }
+    function alternarDropdown(wrap) {
+      const menu = wrap.querySelector('[role="menu"]');
+      const trigger = wrap.querySelector('[data-menu-trigger]');
+      const abrir = menu.classList.contains('hidden');
+      cerrarDropdowns(wrap); // 4.4 · solo uno abierto
+      menu.classList.toggle('hidden', !abrir);
+      trigger.setAttribute('aria-expanded', String(abrir));
+      if (abrir) {
+        const primero = menu.querySelector('[role="menuitem"]:not([disabled])');
+        if (primero) primero.focus();
+      }
+    }
+
+    // 4.5 · un único listener: abrir/cerrar, elegir opción o clic fuera
+    document.addEventListener('click', (ev) => {
+      const trigger = ev.target.closest('[data-menu-trigger]');
+      if (trigger) return alternarDropdown(trigger.closest('[data-dropdown]'));
+
+      const item = ev.target.closest('[role="menuitem"]');
+      if (item && !item.disabled) {
+        const wrap = item.closest('[data-dropdown]');
+        cerrarDropdowns();
+        return ejecutarAccion(wrap.dataset.dropdown, item.dataset.accion, wrap.dataset.id);
+      }
+
+      if (!ev.target.closest('[data-dropdown]')) cerrarDropdowns();
+    });
+
+    /* =========================================================
+       FASE 5 · Modal genérico y confirmación
+       ========================================================= */
+    const modal = {
+      backdrop: document.getElementById('modal-backdrop'),
+      titulo: document.getElementById('modal-title'),
+      cuerpo: document.getElementById('modal-body'),
+      pie: document.getElementById('modal-footer'),
+      cerrar: document.getElementById('modal-close'),
+      origen: null, // { tipo, id } del ⋮ que lo abrió, para devolver el foco
+    };
+    const modalAbierto = () => !modal.backdrop.classList.contains('hidden');
+
+    function abrirModal({ titulo, cuerpo, pie, origen }) {
+      modal.titulo.textContent = titulo;
+      modal.cuerpo.replaceChildren(...[].concat(cuerpo));
+      if (pie && pie.length) {
+        modal.pie.replaceChildren(...pie);
+        modal.pie.classList.remove('hidden');
+      } else {
+        modal.pie.replaceChildren();
+        modal.pie.classList.add('hidden');
+      }
+      modal.origen = origen || null;
+      modal.backdrop.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+      modal.cerrar.focus();
+    }
+
+    function cerrarModal() {
+      if (!modalAbierto()) return;
+      modal.backdrop.classList.add('hidden');
+      modal.cuerpo.replaceChildren();
+      modal.pie.replaceChildren();
+      document.body.classList.remove('overflow-hidden');
+      // Devolver el foco al ⋮ de origen (se busca de nuevo: la fila puede haberse re-renderizado)
+      const o = modal.origen;
+      const destino = (o && document.querySelector(`[data-dropdown="${o.tipo}"][data-id="${o.id}"] [data-menu-trigger]`))
+        || document.querySelector('nav button[aria-current="page"]');
+      if (destino) destino.focus();
+      modal.origen = null;
+    }
+
+    // 5.2 · cierre con ✕, clic en el backdrop (no en el panel) y Escape
+    modal.cerrar.addEventListener('click', cerrarModal);
+    modal.backdrop.addEventListener('click', (ev) => {
+      if (ev.target === modal.backdrop) cerrarModal();
+    });
+    document.addEventListener('keydown', (ev) => {
+      if (ev.key !== 'Escape') return;
+      if (modalAbierto()) return cerrarModal();
+      const abierto = document.querySelector('[data-dropdown] [data-menu-trigger][aria-expanded="true"]');
+      if (abierto) {
+        cerrarDropdowns();
+        abierto.focus();
+      }
+    });
+
+    // Botones del pie
+    const BTN_BASE = 'inline-flex items-center justify-center px-4 py-2 rounded font-label text-label-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-indigo focus-visible:ring-offset-2 focus-visible:ring-offset-light-surface dark:focus-visible:ring-offset-dark-surface-container transition-colors duration-state-change';
+    const BTN = {
+      secundario: `${BTN_BASE} border border-light-outline-variant dark:border-dark-outline-variant bg-light-surface dark:bg-dark-surface-container-high ${TXT_PRINCIPAL} hover:bg-light-surface-container dark:hover:bg-dark-surface-container-highest`,
+      primario: `${BTN_BASE} bg-brand-indigo text-white hover:bg-light-primary`,
+      peligro: `${BTN_BASE} bg-danger-solid text-on-danger-solid hover:bg-red-700`,
+    };
+    function boton(texto, variante, onClick) {
+      const b = el('button', BTN[variante], texto);
+      b.type = 'button';
+      b.addEventListener('click', onClick);
+      return b;
+    }
+
+    // 5.3 · confirmación genérica
+    function confirmar({ titulo, mensaje, textoBoton, peligro, onConfirm, origen }) {
+      abrirModal({
+        titulo,
+        origen,
+        cuerpo: el('p', `font-body text-body-md ${TXT_PRINCIPAL}`, mensaje),
+        pie: [
+          boton('Cancelar', 'secundario', cerrarModal),
+          boton(textoBoton, peligro ? 'peligro' : 'primario', () => {
+            onConfirm();
+            renderAll(); // antes de cerrar, para que el foco vuelva al ⋮ ya re-renderizado
+            cerrarModal();
+          }),
+        ],
+      });
+    }
+
+    // Piezas de contenido para los modales de detalle
+    function listaDefiniciones(pares) {
+      const dl = el('dl', 'divide-y divide-light-outline-variant dark:divide-dark-outline-variant');
+      pares.forEach(([etiqueta, valor]) => {
+        const fila = el('div', 'py-3 flex items-start justify-between gap-4');
+        const dt = el('dt', `font-body text-body-sm ${TXT_SECUNDARIO} shrink-0`, etiqueta);
+        const dd = el('dd', `font-body text-body-md ${TXT_PRINCIPAL} text-right break-words min-w-0`);
+        if (valor instanceof Node) dd.append(valor);
+        else dd.textContent = valor;
+        fila.append(dt, dd);
+        dl.append(fila);
+      });
+      return dl;
+    }
+    function listaNombres(nombres, vacio) {
+      if (nombres.length === 0) return el('p', `font-body text-body-md ${TXT_SECUNDARIO}`, vacio);
+      const ul = el('ul', 'flex flex-col gap-1');
+      nombres.forEach((n) => ul.append(el('li', `font-body text-body-md ${TXT_PRINCIPAL}`, n)));
+      return ul;
+    }
+    const subtitulo = (texto) => el('h3', `font-label text-label-md uppercase ${TXT_SECUNDARIO} mb-2`, texto);
+    const hoyISO = () => {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    };
+
+    /* =========================================================
+       5.4–5.13 · Acciones por tipo
+       ========================================================= */
+    const ACCIONES = {
+      usuario: {
+        // 5.4
+        ver(id, origen) {
+          const u = usuarios.find((x) => x.id === id);
+          abrirModal({
+            titulo: u.nombre,
+            origen,
+            cuerpo: listaDefiniciones([
+              ['Nombre', u.nombre],
+              ['Email', u.email],
+              ['Plan', u.plan],
+              ['Estado', badgeDe(ESTADO_USUARIO, u.estado)],
+              ['Fecha de alta', fmtFecha(u.alta)],
+              ['Empresa', getEmpresa(u.empresaId).nombre],
+              ['Agentes contratados', listaNombres(u.agenteIds.map((aid) => getAgente(aid).nombre), 'Sin agentes contratados.')],
+            ]),
+          });
+        },
+        // 5.5
+        eliminar(id, origen) {
+          const u = usuarios.find((x) => x.id === id);
+          confirmar({
+            titulo: 'Confirmar eliminación',
+            mensaje: `¿Eliminar a ${u.nombre}? Esta acción no se puede deshacer.`,
+            textoBoton: 'Eliminar',
+            peligro: true,
+            origen,
+            onConfirm: () => usuarios.splice(usuarios.indexOf(u), 1),
+          });
+        },
+      },
+      agente: {
+        // 5.6
+        configurar(id, origen) {
+          const a = getAgente(id);
+          const wrap = el('div', 'flex flex-col gap-2');
+          const label = el('label', `font-label text-label-lg ${TXT_PRINCIPAL}`, 'Prompt de sistema');
+          label.htmlFor = 'prompt-input';
+          const ta = el('textarea', `w-full rounded border border-light-outline-variant dark:border-dark-outline-variant bg-light-surface dark:bg-dark-surface p-3 font-body text-body-md ${TXT_PRINCIPAL} resize-y focus:outline-none focus:ring-2 focus:ring-brand-indigo`);
+          ta.id = 'prompt-input';
+          ta.rows = 8;
+          ta.value = a.prompt;
+          wrap.append(label, ta);
+          abrirModal({
+            titulo: `Configurar: ${a.nombre}`,
+            origen,
+            cuerpo: wrap,
+            pie: [
+              boton('Cancelar', 'secundario', cerrarModal),
+              boton('Guardar', 'primario', () => {
+                a.prompt = ta.value;
+                cerrarModal();
+              }),
+            ],
+          });
+        },
+        // 5.7
+        eliminar(id, origen) {
+          const a = getAgente(id);
+          confirmar({
+            titulo: 'Confirmar eliminación',
+            mensaje: `¿Eliminar el agente ${a.nombre}? Esta acción no se puede deshacer.`,
+            textoBoton: 'Eliminar',
+            peligro: true,
+            origen,
+            onConfirm: () => { a.eliminado = true; },
+          });
+        },
+      },
+      skill: {
+        // 5.8
+        ver(id, origen) {
+          const s = getSkill(id);
+          const cuerpo = el('div', 'flex flex-col gap-6');
+          const agentesBloque = el('section');
+          agentesBloque.append(subtitulo('Agentes que la usan'), listaNombres(agentesConSkill(s.id).map((a) => a.nombre), 'Ningún agente la usa actualmente.'));
+          const precioBloque = el('section');
+          precioBloque.append(subtitulo('Precio'), el('p', `font-headline text-title-lg ${TXT_PRINCIPAL} tabular-nums`, `${fmtEuro(s.precio)} / mes`));
+          cuerpo.append(el('p', `font-body text-body-md ${TXT_PRINCIPAL}`, s.descripcionAmplia), agentesBloque, precioBloque);
+          abrirModal({ titulo: s.nombre, origen, cuerpo });
+        },
+        // 5.9
+        eliminar(id, origen) {
+          const s = getSkill(id);
+          confirmar({
+            titulo: 'Confirmar eliminación',
+            mensaje: `¿Eliminar la skill ${s.nombre} del catálogo?`,
+            textoBoton: 'Eliminar',
+            peligro: true,
+            origen,
+            onConfirm: () => { s.eliminado = true; },
+          });
+        },
+      },
+      contrato: {
+        // 5.10
+        ver(id, origen) {
+          const c = contratos.find((x) => x.id === id);
+          const agente = getAgente(c.agenteId).nombre;
+          const cliente = getEmpresa(c.empresaId).nombre;
+          const cuerpo = el('div', 'flex flex-col gap-6');
+          cuerpo.append(listaDefiniciones([
+            ['Cliente', cliente],
+            ['Agente', agente],
+            ['Fecha de inicio', fmtFecha(c.inicio)],
+            ['Fecha de fin', fmtFecha(c.fin)],
+            ['Estado', badgeDe(ESTADO_CONTRATO, c.estado)],
+          ]));
+
+          const TH = `py-2 px-2 font-label text-label-md uppercase ${TXT_SECUNDARIO}`;
+          const TD = `py-2 px-2 font-body text-body-sm ${TXT_PRINCIPAL} tabular-nums`;
+          const tabla = el('table', 'w-full text-left border-collapse');
+          const thead = el('thead');
+          const trh = el('tr', 'border-b border-light-outline-variant dark:border-dark-outline-variant');
+          [['Skill', ''], ['Precio/mes', 'text-right'], ['Meses', 'text-right'], ['Subtotal', 'text-right']].forEach(([t, extra]) => {
+            const th = el('th', `${TH} ${extra}`, t);
+            th.scope = 'col';
+            trh.append(th);
+          });
+          thead.append(trh);
+          const tbody = el('tbody', 'divide-y divide-light-outline-variant dark:divide-dark-outline-variant');
+          let total = 0;
+          c.skillIds.forEach((sid) => {
+            const s = getSkill(sid);
+            const subtotal = s.precio * c.meses;
+            total += subtotal;
+            const tr = el('tr');
+            tr.append(
+              el('td', TD, s.nombre),
+              el('td', `${TD} text-right whitespace-nowrap`, fmtEuro(s.precio)),
+              el('td', `${TD} text-right`, String(c.meses)),
+              el('td', `${TD} text-right whitespace-nowrap`, fmtEuro(subtotal))
+            );
+            tbody.append(tr);
+          });
+          const tfoot = el('tfoot');
+          const trf = el('tr', 'border-t-2 border-light-outline-variant dark:border-dark-outline-variant');
+          const tdTotal = el('td', `py-3 px-2 font-body text-body-md font-bold ${TXT_PRINCIPAL}`, 'Total');
+          tdTotal.colSpan = 3;
+          trf.append(tdTotal, el('td', `py-3 px-2 text-right font-body text-body-md font-bold ${TXT_PRINCIPAL} tabular-nums whitespace-nowrap`, fmtEuro(total)));
+          tfoot.append(trf);
+          tabla.append(thead, tbody, tfoot);
+
+          const desglose = el('section');
+          desglose.append(subtitulo('Desglose'), tabla);
+          cuerpo.append(desglose);
+          abrirModal({ titulo: `${agente} — ${cliente}`, origen, cuerpo });
+        },
+        // 5.11
+        finalizar(id, origen) {
+          const c = contratos.find((x) => x.id === id);
+          if (c.estado === 'finalizado') return;
+          confirmar({
+            titulo: 'Finalizar contrato',
+            mensaje: `¿Finalizar el contrato de ${getAgente(c.agenteId).nombre} con ${getEmpresa(c.empresaId).nombre}?`,
+            textoBoton: 'Finalizar',
+            peligro: false,
+            origen,
+            onConfirm: () => {
+              c.estado = 'finalizado';
+              c.fin = hoyISO();
+            },
+          });
+        },
+      },
+      error: {
+        // 5.12
+        ver(id, origen) {
+          const e = errores.find((x) => x.id === id);
+          const cuerpo = el('div', 'flex flex-col gap-6');
+          cuerpo.append(listaDefiniciones([
+            ['Agente', getAgente(e.agenteId).nombre],
+            ['Fecha y hora', fmtFechaHora(e.timestamp)],
+            ['Gravedad', badgeDe(GRAVEDAD, e.gravedad)],
+            ['Descripción', e.descripcion],
+          ]));
+          const trazaBloque = el('section');
+          trazaBloque.append(subtitulo('Traza técnica'), el('pre', 'font-mono text-mono-sm bg-terminal-bg text-terminal-text rounded-lg p-4 overflow-x-auto whitespace-pre', e.traza));
+          cuerpo.append(trazaBloque);
+          abrirModal({ titulo: e.nombre, origen, cuerpo });
+        },
+        // 5.13
+        resolver(id, origen) {
+          const e = errores.find((x) => x.id === id);
+          confirmar({
+            titulo: 'Marcar como resuelto',
+            mensaje: `¿Marcar como resuelto el error ${e.nombre} de ${getAgente(e.agenteId).nombre}?`,
+            textoBoton: 'Marcar como resuelto',
+            peligro: false,
+            origen,
+            onConfirm: () => errores.splice(errores.indexOf(e), 1),
+          });
+        },
+      },
+    };
+
+    function ejecutarAccion(tipo, accion, id) {
+      ACCIONES[tipo][accion](id, { tipo, id });
+    }
+
+    renderAll();
+  </script>
+
+</body>
+</html>

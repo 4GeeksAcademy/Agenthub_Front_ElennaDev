@@ -1,0 +1,387 @@
+<!DOCTYPE html><html lang="es" class="dark"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de agentes — Skills expandidas — AgentHub Admin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'brand-indigo': '#4F46E5',
+        'brand-indigo-soft': '#26234D',
+        'brand-indigo-border': '#3B377A',
+        'brand-indigo-text': '#C3C0FF',
+        'accent-blue': '#3B82F6',
+        'accent-blue-soft': '#172554',
+        'accent-blue-text': '#93C5FD',
+        'accent-purple': '#A855F7',
+        'accent-purple-soft': '#3B0764',
+        'accent-green': '#22C55E',
+        'accent-green-soft': '#14532D',
+        'accent-green-text': '#86EFAC',
+        'accent-red': '#EF4444',
+        'accent-red-soft': '#450A0A',
+        'accent-red-text': '#FCA5A5',
+        'accent-yellow': '#EAB308',
+        'accent-yellow-soft': '#422006',
+        'accent-yellow-text': '#FDE047',
+        'accent-orange': '#F97316',
+        'accent-orange-soft': '#431407',
+        'accent-orange-text': '#FDBA74',
+        'accent-neutral-soft': '#2A2933',
+        'accent-neutral-text': '#C7C4D8',
+        'danger-solid': '#DC2626',
+        'on-danger-solid': '#FFFFFF',
+        'terminal-bg': '#09090E',
+        'terminal-text': '#86EFAC',
+        'light-primary': '#3525CD',
+        'light-on-primary': '#FFFFFF',
+        'light-primary-container': '#4F46E5',
+        'light-on-primary-container': '#FFFFFF',
+        'light-secondary': '#58579B',
+        'light-on-secondary': '#FFFFFF',
+        'light-secondary-container': '#E2DFFF',
+        'light-on-secondary-container': '#1D00A5',
+        'light-error': '#BA1A1A',
+        'light-on-error': '#FFFFFF',
+        'light-error-container': '#FFDAD6',
+        'light-on-error-container': '#93000A',
+        'light-background': '#F8FAFC',
+        'light-on-background': '#1B1B24',
+        'light-surface': '#FFFFFF',
+        'light-surface-container-lowest': '#FFFFFF',
+        'light-surface-container-low': '#F5F2FF',
+        'light-surface-container': '#F0ECF9',
+        'light-surface-container-high': '#EAE6F4',
+        'light-surface-container-highest': '#E4E1EE',
+        'light-on-surface': '#1B1B24',
+        'light-on-surface-variant': '#464555',
+        'light-outline': '#777587',
+        'light-outline-variant': '#C7C4D8',
+        'light-scrim': '#000000',
+        'dark-primary': '#C3C0FF',
+        'dark-on-primary': '#1D00A5',
+        'dark-primary-container': '#4F46E5',
+        'dark-on-primary-container': '#FFFFFF',
+        'dark-secondary': '#C3C0FF',
+        'dark-on-secondary': '#2A276A',
+        'dark-secondary-container': '#2A276A',
+        'dark-on-secondary-container': '#E2DFFF',
+        'dark-error': '#FFB4AB',
+        'dark-on-error': '#690005',
+        'dark-error-container': '#93000A',
+        'dark-on-error-container': '#FFDAD6',
+        'dark-background': '#0E0D16',
+        'dark-on-background': '#E4E1EE',
+        'dark-surface': '#1B1B24',
+        'dark-surface-container-lowest': '#0E0D16',
+        'dark-surface-container-low': '#16151F',
+        'dark-surface-container': '#1F1F28',
+        'dark-surface-container-high': '#2A2933',
+        'dark-surface-container-highest': '#35343E',
+        'dark-on-surface': '#E4E1EE',
+        'dark-on-surface-variant': '#ACA9BC',
+        'dark-outline': '#918FA1',
+        'dark-outline-variant': '#302F3E',
+        'dark-scrim': '#000000',
+      },
+      borderRadius: {
+        'sm': '6px',
+        'DEFAULT': '8px',
+        'md': '10px',
+        'lg': '12px',
+        'xl': '16px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '32px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Mulish"', 'sans-serif'],
+        'headline': ['"Mulish"', 'sans-serif'],
+        'title': ['"Instrument Sans"', 'sans-serif'],
+        'body': ['"Instrument Sans"', 'sans-serif'],
+        'label': ['"Instrument Sans"', 'sans-serif'],
+        'mono': ['"Spline Sans Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['36px', { lineHeight: '44px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '34px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'headline-lg': ['24px', { lineHeight: '32px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'headline-md': ['20px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '700' }],
+        'title-lg': ['18px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '600' }],
+        'title-md': ['15px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '600' }],
+        'body-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['13px', { lineHeight: '18px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+        'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.25px', fontWeight: '600' }],
+        'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-sm': ['12px', { lineHeight: '18px', letterSpacing: '0px', fontWeight: '400' }],
+      },
+      transitionDuration: {
+        'state-change': '100ms',
+        'drawer-toggle': '300ms',
+        'surface-enter': '200ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'drawer-toggle': '0ms',
+        'surface-enter': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'drawer-toggle': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&amp;family=Mulish:wght@600;700&amp;family=Spline+Sans+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+</head>
+<body class="bg-light-background dark:bg-dark-background text-light-on-background dark:text-dark-on-background font-body antialiased">
+  <div class="min-h-[1024px] flex" data-stitch-vh="min-h-[1024px]===min-h-screen">
+    <!-- Sidebar fijo izquierdo -->
+    <aside class="w-56 lg:w-64 shrink-0 min-h-[1024px] bg-light-surface dark:bg-dark-surface border-r border-light-outline-variant dark:border-dark-outline-variant flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+      <div class="h-16 px-5 flex items-center gap-3 border-b border-light-outline-variant dark:border-dark-outline-variant">
+        <div class="w-8 h-8 rounded bg-brand-indigo flex items-center justify-center text-light-on-primary shrink-0">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="4" y="7" width="16" height="12" rx="3"></rect><path d="M12 7V3M9 3h6M9 12h.01M15 12h.01M9.5 15.5c.7.6 1.6 1 2.5 1s1.8-.4 2.5-1"></path>
+          </svg>
+        </div>
+        <span data-design-text-token="title-lg" class="font-headline text-title-lg font-bold text-light-on-surface dark:text-dark-on-surface">AgentHub</span>
+      </div>
+
+      <nav aria-label="Navegación principal" class="flex-1 p-3 flex flex-col gap-1">
+        <a href="#dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded text-light-on-surface-variant dark:text-dark-on-surface-variant hover:bg-light-surface-container dark:hover:bg-dark-surface-container transition-colors duration-state-change">
+          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect>
+          </svg>
+          <span data-design-text-token="label-lg" class="font-label text-label-lg">Dashboard</span>
+        </a>
+
+        <a href="#usuarios" class="flex items-center gap-3 px-3 py-2.5 rounded text-light-on-surface-variant dark:text-dark-on-surface-variant hover:bg-light-surface-container dark:hover:bg-dark-surface-container transition-colors duration-state-change">
+          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span data-design-text-token="label-lg" class="font-label text-label-lg">Usuarios</span>
+        </a>
+
+        <a href="#agentes" aria-current="page" class="flex items-center gap-3 px-3 py-2.5 rounded bg-light-secondary-container text-light-on-secondary-container dark:bg-brand-indigo-soft dark:text-brand-indigo-text border-l-2 border-brand-indigo font-semibold transition-colors duration-state-change">
+          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+          </svg>
+          <span data-design-text-token="label-lg" class="font-label text-label-lg">Agentes</span>
+        </a>
+
+        <a href="#skills" class="flex items-center gap-3 px-3 py-2.5 rounded text-light-on-surface-variant dark:text-dark-on-surface-variant hover:bg-light-surface-container dark:hover:bg-dark-surface-container transition-colors duration-state-change">
+          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"></path>
+          </svg>
+          <span data-design-text-token="label-lg" class="font-label text-label-lg">Skills</span>
+        </a>
+
+        <a href="#contrataciones" class="flex items-center gap-3 px-3 py-2.5 rounded text-light-on-surface-variant dark:text-dark-on-surface-variant hover:bg-light-surface-container dark:hover:bg-dark-surface-container transition-colors duration-state-change">
+          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg>
+          <span data-design-text-token="label-lg" class="font-label text-label-lg">Contrataciones</span>
+        </a>
+
+        <a href="#errores" class="flex items-center gap-3 px-3 py-2.5 rounded text-light-on-surface-variant dark:text-dark-on-surface-variant hover:bg-light-surface-container dark:hover:bg-dark-surface-container transition-colors duration-state-change">
+          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path>
+          </svg>
+          <span data-design-text-token="label-lg" class="font-label text-label-lg">Log de errores</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Área de contenido principal -->
+    <div class="flex-1 min-w-0 flex flex-col min-h-[1024px]" data-stitch-vh="min-h-[1024px]===min-h-screen">
+      <header class="sticky top-0 z-20 h-16 px-6 lg:px-8 bg-light-surface dark:bg-dark-surface border-b border-light-outline-variant dark:border-dark-outline-variant flex items-center justify-between">
+        <h1 data-design-text-token="headline-md" class="font-headline text-headline-md text-light-on-surface dark:text-dark-on-surface">Gestión de agentes</h1>
+        <button id="theme-toggle" data-component-id="button-theme-toggle" data-component-type="button" data-component-variant="icon" type="button" aria-label="Cambiar modo claro/oscuro" aria-pressed="true" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-light-surface-container dark:bg-dark-surface-container border border-light-outline-variant dark:border-dark-outline-variant text-light-on-surface dark:text-dark-on-surface hover:bg-light-surface-container-high dark:hover:bg-dark-surface-container-high transition-colors duration-state-change">
+          <svg class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+          </svg>
+          <svg class="w-4 h-4 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+        </button>
+      </header>
+
+      <main class="flex-1 p-6 lg:p-8">
+        <div data-component-id="table-standard" data-component-type="table" data-component-variant="standard" class="w-full rounded-lg bg-light-surface dark:bg-dark-surface border border-light-outline-variant dark:border-dark-outline-variant overflow-visible">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-light-outline-variant dark:border-dark-outline-variant bg-light-surface-container-low dark:bg-dark-surface-container-low">
+                <th scope="col" class="py-3 px-4"><span data-design-text-token="label-md" class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Nombre</span></th>
+                <th scope="col" class="py-3 px-4"><span data-design-text-token="label-md" class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Propietario</span></th>
+                <th scope="col" class="py-3 px-4"><span data-design-text-token="label-md" class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Estado</span></th>
+                <th scope="col" class="py-3 px-4"><span data-design-text-token="label-md" class="font-label text-label-md text-light-on-surface-variant dark:text-dark-on-surface-variant uppercase">Skills</span></th>
+                <th scope="col" class="py-3 px-4 w-12 text-right"><span class="sr-only">Acciones</span></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-light-outline-variant dark:divide-dark-outline-variant">
+              <!-- Fila 1: Atlas Soporte (Skills expandidas) -->
+              <tr class="bg-light-surface-container-low dark:bg-dark-surface-container">
+                <td class="py-3.5 px-4"><span data-design-text-token="body-md" class="font-body text-body-md font-medium text-light-on-surface dark:text-dark-on-surface">Atlas Soporte</span></td>
+                <td class="py-3.5 px-4"><span data-design-text-token="body-md" class="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant">Nexora Logística</span></td>
+                <td class="py-3.5 px-4">
+                  <span role="status" class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-accent-green-soft text-accent-green-text"><span data-design-text-token="label-sm" class="font-label text-label-sm">Activo</span></span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <button type="button" aria-expanded="true" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-light-secondary-container dark:bg-brand-indigo-soft border border-brand-indigo-border text-light-on-secondary-container dark:text-brand-indigo-text transition-colors duration-state-change">
+                    <span data-design-text-token="label-md" class="font-label text-label-md tabular-nums">3 skills</span>
+                    <svg class="w-3.5 h-3.5 rotate-180 transition-transform duration-drawer-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+                  </button>
+                </td>
+                <td class="py-3.5 px-4 text-right">
+                  <button type="button" aria-label="Acciones de Atlas Soporte" class="inline-flex items-center justify-center w-8 h-8 rounded text-light-on-surface-variant dark:text-dark-on-surface-variant hover:bg-light-surface-container dark:hover:bg-dark-surface-container-high transition-colors duration-state-change">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Sub-fila desplegada de skills -->
+              <tr class="bg-light-surface-container-low dark:bg-dark-surface-container-low">
+                <td colspan="5" class="px-6 py-3.5">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span data-design-text-token="label-sm" class="font-label text-label-sm text-light-on-surface-variant dark:text-dark-on-surface-variant mr-1">Skills equipadas:</span>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-sm bg-light-surface dark:bg-dark-surface-container border border-light-outline-variant dark:border-dark-outline-variant text-light-on-surface dark:text-dark-on-surface">
+                      <span data-design-text-token="label-md" class="font-label text-label-md">Navegación web</span>
+                    </span>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-sm bg-light-surface dark:bg-dark-surface-container border border-light-outline-variant dark:border-dark-outline-variant text-light-on-surface dark:text-dark-on-surface">
+                      <span data-design-text-token="label-md" class="font-label text-label-md">Lectura de documentos</span>
+                    </span>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-sm bg-light-surface dark:bg-dark-surface-container border border-light-outline-variant dark:border-dark-outline-variant text-light-on-surface dark:text-dark-on-surface">
+                      <span data-design-text-token="label-md" class="font-label text-label-md">Envío de correos</span>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-light-surface-container-low dark:hover:bg-dark-surface-container transition-colors duration-state-change">
+                <td class="py-3.5 px-4"><span data-design-text-token="body-md" class="font-body text-body-md font-medium text-light-on-surface dark:text-dark-on-surface">Clara Agenda</span></td>
+                <td class="py-3.5 px-4"><span data-design-text-token="body-md" class="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant">Lumen Salud</span></td>
+                <td class="py-3.5 px-4">
+                  <span role="status" class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-accent-green-soft text-accent-green-text"><span data-design-text-token="label-sm" class="font-label text-label-sm">Activo</span></span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <button type="button" aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-light-surface-container dark:bg-dark-surface-container border border-light-outline-variant dark:border-dark-outline-variant text-light-on-surface dark:text-dark-on-surface">
+                    <span data-design-text-token="label-md" class="font-label text-label-md tabular-nums">2 skills</span>
+                    <svg class="w-3.5 h-3.5 text-light-on-surface-variant dark:text-dark-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+                  </button>
+                </td>
+                <td class="py-3.5 px-4 text-right">
+                  <button type="button" aria-label="Acciones de Clara Agenda" class="inline-flex items-center justify-center w-8 h-8 rounded text-light-on-surface-variant dark:text-dark-on-surface-variant">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-light-surface-container-low dark:hover:bg-dark-surface-container transition-colors duration-state-change">
+                <td class="py-3.5 px-4"><span data-design-text-token="body-md" class="font-body text-body-md font-medium text-light-on-surface dark:text-dark-on-surface">Orion Ventas</span></td>
+                <td class="py-3.5 px-4"><span data-design-text-token="body-md" class="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant">Bravia Retail</span></td>
+                <td class="py-3.5 px-4">
+                  <span role="status" class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-accent-red-soft text-accent-red-text"><span data-design-text-token="label-sm" class="font-label text-label-sm">Fallando</span></span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <button type="button" aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-light-surface-container dark:bg-dark-surface-container border border-light-outline-variant dark:border-dark-outline-variant text-light-on-surface dark:text-dark-on-surface">
+                    <span data-design-text-token="label-md" class="font-label text-label-md tabular-nums">3 skills</span>
+                    <svg class="w-3.5 h-3.5 text-light-on-surface-variant dark:text-dark-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+                  </button>
+                </td>
+                <td class="py-3.5 px-4 text-right">
+                  <button type="button" aria-label="Acciones de Orion Ventas" class="inline-flex items-center justify-center w-8 h-8 rounded text-light-on-surface-variant dark:text-dark-on-surface-variant">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-light-surface-container-low dark:hover:bg-dark-surface-container transition-colors duration-state-change">
+                <td class="py-3.5 px-4"><span data-design-text-token="body-md" class="font-body text-body-md font-medium text-light-on-surface dark:text-dark-on-surface">Vega Finanzas</span></td>
+                <td class="py-3.5 px-4"><span data-design-text-token="body-md" class="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant">Tercia Finanzas</span></td>
+                <td class="py-3.5 px-4">
+                  <span role="status" class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-accent-red-soft text-accent-red-text"><span data-design-text-token="label-sm" class="font-label text-label-sm">Fallando</span></span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <button type="button" aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-light-surface-container dark:bg-dark-surface-container border border-light-outline-variant dark:border-dark-outline-variant text-light-on-surface dark:text-dark-on-surface">
+                    <span data-design-text-token="label-md" class="font-label text-label-md tabular-nums">2 skills</span>
+                    <svg class="w-3.5 h-3.5 text-light-on-surface-variant dark:text-dark-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+                  </button>
+                </td>
+                <td class="py-3.5 px-4 text-right">
+                  <button type="button" aria-label="Acciones de Vega Finanzas" class="inline-flex items-center justify-center w-8 h-8 rounded text-light-on-surface-variant dark:text-dark-on-surface-variant">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-light-surface-container-low dark:hover:bg-dark-surface-container transition-colors duration-state-change">
+                <td class="py-3.5 px-4"><span data-design-text-token="body-md" class="font-body text-body-md font-medium text-light-on-surface dark:text-dark-on-surface">Lex Contratos</span></td>
+                <td class="py-3.5 px-4"><span data-design-text-token="body-md" class="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant">Ondara Legal</span></td>
+                <td class="py-3.5 px-4">
+                  <span role="status" class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-accent-neutral-soft text-accent-neutral-text"><span data-design-text-token="label-sm" class="font-label text-label-sm">Inactivo</span></span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <button type="button" aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-light-surface-container dark:bg-dark-surface-container border border-light-outline-variant dark:border-dark-outline-variant text-light-on-surface dark:text-dark-on-surface">
+                    <span data-design-text-token="label-md" class="font-label text-label-md tabular-nums">1 skill</span>
+                    <svg class="w-3.5 h-3.5 text-light-on-surface-variant dark:text-dark-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+                  </button>
+                </td>
+                <td class="py-3.5 px-4 text-right">
+                  <button type="button" aria-label="Acciones de Lex Contratos" class="inline-flex items-center justify-center w-8 h-8 rounded text-light-on-surface-variant dark:text-dark-on-surface-variant">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-light-surface-container-low dark:hover:bg-dark-surface-container transition-colors duration-state-change">
+                <td class="py-3.5 px-4"><span data-design-text-token="body-md" class="font-body text-body-md font-medium text-light-on-surface dark:text-dark-on-surface">Nova Marketing</span></td>
+                <td class="py-3.5 px-4"><span data-design-text-token="body-md" class="font-body text-body-md text-light-on-surface-variant dark:text-dark-on-surface-variant">Bravia Retail</span></td>
+                <td class="py-3.5 px-4">
+                  <span role="status" class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-accent-green-soft text-accent-green-text"><span data-design-text-token="label-sm" class="font-label text-label-sm">Activo</span></span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <button type="button" aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-light-surface-container dark:bg-dark-surface-container border border-light-outline-variant dark:border-dark-outline-variant text-light-on-surface dark:text-dark-on-surface">
+                    <span data-design-text-token="label-md" class="font-label text-label-md tabular-nums">4 skills</span>
+                    <svg class="w-3.5 h-3.5 text-light-on-surface-variant dark:text-dark-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+                  </button>
+                </td>
+                <td class="py-3.5 px-4 text-right">
+                  <button type="button" aria-label="Acciones de Nova Marketing" class="inline-flex items-center justify-center w-8 h-8 rounded text-light-on-surface-variant dark:text-dark-on-surface-variant">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById('theme-toggle');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        toggleBtn.setAttribute('aria-pressed', String(isDark));
+      });
+    }
+  </script>
+
+
+</body></html>
